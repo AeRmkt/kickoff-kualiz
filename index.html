@@ -1,0 +1,1782 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kick-off de Implantação Kualiz</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#D65F3B; --orange-2:#E9774F; --orange-soft:#FDF0EB;
+  --blue:#4472A3; --blue-soft:#EDF3FA;
+  --yellow:#F5B93B; --yellow-soft:#FEF7E6;
+  --ink:#17171F; --ink-2:#4B4B57; --ink-3:#8A8A96;
+  --line:#ECE8E4; --bg:#FFFFFF; --bg-2:#FBF9F7;
+  --wa:#25D366;
+  --radius:22px;
+  --shadow:0 1px 2px rgba(23,23,31,.04),0 8px 30px -12px rgba(23,23,31,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{font-family:"Nunito",system-ui,sans-serif;letter-spacing:-.02em;line-height:1.12;margin:0}
+p{margin:0}
+img{max-width:100%}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px}
+
+/* ---------- Top bar + scroll progress (Magic UI: Scroll Progress) ---------- */
+.topbar{position:fixed;inset:0 0 auto 0;z-index:50;background:rgba(255,255,255,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(236,232,228,.7)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.topbar img{height:30px}
+.topbar .tag{font-size:13px;font-weight:600;color:var(--ink-2);display:flex;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink-2)}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 0 0 rgba(214,95,59,.6);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(214,95,59,.55)}80%,100%{box-shadow:0 0 0 9px rgba(214,95,59,0)}}
+.progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--orange),var(--yellow),var(--blue))}
+
+/* ---------- Sections ---------- */
+section{position:relative;padding-block:112px}
+section.alt{background:var(--bg-2)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
+.eyebrow::before{content:"";width:18px;height:2px;border-radius:2px;background:currentColor}
+.eyebrow.blue{color:var(--blue)}
+h2{font-size:clamp(30px,4.2vw,50px);font-weight:900;max-width:880px}
+.lead{font-size:clamp(17px,1.6vw,19px);color:var(--ink-2);max-width:760px;margin-top:18px}
+.hl{color:var(--orange)}
+.hl-blue{color:var(--blue)}
+.head{margin-bottom:56px}
+.slide-no{position:absolute;top:40px;right:max(24px,calc((100vw - 1180px)/2 + 24px));font-family:Nunito;font-weight:900;font-size:13px;color:var(--ink-3);letter-spacing:.1em}
+
+/* Dot pattern (Magic UI) */
+.dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(23,23,31,.13) 1px,transparent 1px);background-size:22px 22px;-webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 40%,#000 20%,transparent 75%)}
+
+/* Blur fade (Magic UI) */
+.bf{opacity:0;filter:blur(8px);transform:translateY(18px);transition:opacity .8s ease,filter .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.bf.in{opacity:1;filter:blur(0);transform:none}
+
+/* Card base */
+.card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);transition:transform .35s ease,box-shadow .35s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 1px 2px rgba(23,23,31,.04),0 22px 44px -18px rgba(23,23,31,.2)}
+
+/* Magic Card spotlight */
+.magic{overflow:hidden}
+.magic::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),rgba(214,95,59,.09),transparent 45%);opacity:0;transition:opacity .3s}
+.magic:hover::before{opacity:1}
+
+/* Border beam (Magic UI) */
+.beam{isolation:isolate}
+.beam::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:conic-gradient(from var(--a),transparent 0 72%,var(--orange) 82%,var(--yellow) 88%,transparent 94%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 6s linear infinite}
+.beam.blue-beam::after{background:conic-gradient(from var(--a),transparent 0 72%,var(--blue) 82%,#8FB4DB 88%,transparent 94%)}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes spin{to{--a:360deg}}
+
+/* Animated gradient text (Magic UI) */
+.grad{background:linear-gradient(90deg,var(--orange),var(--yellow),var(--orange-2),var(--blue),var(--orange));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradmove 8s linear infinite}
+@keyframes gradmove{to{background-position:300% 0}}
+
+/* Shimmer button */
+.shimmer{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:15px;text-decoration:none;border:0}
+.shimmer::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-100%);animation:shim 2.8s infinite}
+@keyframes shim{60%,100%{transform:translateX(100%)}}
+
+/* ---------- HERO ---------- */
+.hero{padding-top:150px;padding-bottom:96px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(40px,6.4vw,78px);font-weight:900;letter-spacing:-.035em}
+.hero .lead{font-size:clamp(18px,1.8vw,21px)}
+.meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:40px;max-width:620px}
+.meta .card{padding:16px 18px;border-radius:16px}
+.meta .k{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:flex;gap:6px;align-items:center}
+.meta .v{font-weight:700;font-size:16px;margin-top:2px}
+.orbit{container-type:inline-size;position:relative;aspect-ratio:1;max-width:520px;width:100%;margin-inline:auto}
+.orbit .ring{position:absolute;border-radius:50%;border:1px dashed rgba(23,23,31,.14);inset:0}
+.orbit .ring.r2{inset:17%}
+.orbit .ring.r3{inset:34%;border-style:solid;border-color:rgba(214,95,59,.18)}
+.orbit .core{position:absolute;inset:39%;border-radius:32px;background:#fff;box-shadow:0 30px 60px -20px rgba(214,95,59,.35),0 0 0 10px rgba(214,95,59,.06);display:grid;place-items:center}
+.orbit .core svg{width:62%}
+.orbiter{position:absolute;top:50%;left:50%;width:0;height:0;animation:orbit var(--d,24s) linear infinite;animation-delay:var(--delay,0s)}
+.orbiter.rev{animation-direction:reverse}
+.orbiter>div{position:absolute;transform:translate(-50%,-50%) translateX(var(--r)) rotate(0);animation:counter var(--d,24s) linear infinite;animation-delay:var(--delay,0s)}
+.orbiter.rev>div{animation-direction:reverse}
+@keyframes orbit{to{transform:rotate(360deg)}}
+@keyframes counter{from{transform:translate(-50%,-50%) translateX(var(--r)) rotate(0)}to{transform:translate(-50%,-50%) translateX(var(--r)) rotate(-360deg)}}
+.chip{width:58px;height:58px;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);display:grid;place-items:center}
+.chip svg{width:28px;height:28px}
+.chip.sm{width:46px;height:46px;border-radius:14px}
+.chip.sm svg{width:22px;height:22px}
+
+/* ---------- CANAIS / animated beam ---------- */
+.hub{position:relative;display:grid;grid-template-columns:1fr auto 1.5fr;gap:56px;align-items:center}
+.hub svg.beams{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.channels{display:flex;flex-direction:column;gap:18px}
+.channel{display:flex;gap:14px;align-items:center;padding:14px 18px;border-radius:18px;position:relative;z-index:1}
+.channel h4{font-size:17px;font-weight:800}
+.channel p{font-size:13px;color:var(--ink-3)}
+.hubcore{position:relative;z-index:1;width:120px;height:120px;border-radius:30px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;box-shadow:0 20px 50px -16px rgba(214,95,59,.45)}
+.hubcore svg{width:70px}
+.hubcore .lbl{position:absolute;bottom:-34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px;font-weight:700;color:var(--ink-2)}
+
+/* Browser mockup */
+.browser{position:relative;z-index:1;border-radius:18px;background:#fff;border:1px solid var(--line);box-shadow:0 40px 80px -30px rgba(23,23,31,.28);overflow:hidden}
+.browser .bar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--line);background:#FBFAF9}
+.browser .bar i{width:10px;height:10px;border-radius:50%;background:#E6E1DC;display:block}
+.browser .bar i:nth-child(1){background:#FF6159}.browser .bar i:nth-child(2){background:#FFBD2E}.browser .bar i:nth-child(3){background:#28C941}
+.browser .url{margin-left:12px;flex:1;height:24px;border-radius:7px;background:#F1EEEA;font-size:11.5px;color:var(--ink-3);display:flex;align-items:center;padding-inline:10px}
+.inbox{display:grid;grid-template-columns:52px 190px 1fr;height:340px;font-size:12px}
+.inbox .rail{background:var(--ink);display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:14px}
+.inbox .rail span{width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.08)}
+.inbox .rail span.on{background:var(--orange)}
+.inbox .list{border-right:1px solid var(--line);overflow:hidden}
+.inbox .list .search{margin:10px;height:26px;border-radius:8px;background:#F3F0EC}
+.conv{display:flex;gap:9px;padding:9px 10px;align-items:center;border-left:3px solid transparent}
+.conv.on{background:var(--orange-soft);border-left-color:var(--orange)}
+.av{width:30px;height:30px;border-radius:50%;flex:none;position:relative;display:grid;place-items:center;color:#fff;font-weight:700;font-size:11px}
+.av b{position:absolute;right:-3px;bottom:-3px;width:15px;height:15px;border-radius:50%;border:2px solid #fff;display:grid;place-items:center}
+.av b svg{width:8px;height:8px}
+.conv .n{font-weight:700;color:var(--ink);font-size:12px;line-height:1.2}
+.conv .m{color:var(--ink-3);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}
+.chatpane{display:flex;flex-direction:column;background:#FCFBFA}
+.chatpane .ch{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);background:#fff}
+.tagx{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
+.msgs{flex:1;padding:14px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.b{max-width:78%;padding:8px 11px;border-radius:12px;font-size:11.5px;line-height:1.45}
+.b.in{background:#fff;border:1px solid var(--line);align-self:flex-start;border-top-left-radius:4px}
+.b.out{background:var(--orange);color:#fff;align-self:flex-end;border-top-right-radius:4px}
+.b.bot{background:var(--blue-soft);color:#24466D;align-self:flex-end;border-top-right-radius:4px}
+.compose{margin:10px;height:32px;border-radius:10px;background:#fff;border:1px solid var(--line)}
+
+/* Marquee */
+.marquee{display:flex;overflow:hidden;gap:16px;margin-top:64px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee .track{display:flex;gap:16px;flex:none;animation:marq 30s linear infinite}
+@keyframes marq{to{transform:translateX(calc(-100% - 16px))}}
+.marquee .pill{font-size:14px;padding:10px 18px;white-space:nowrap}
+
+/* ---------- FASES timeline ---------- */
+.phases{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.phases .track-line{position:absolute;top:34px;left:6%;right:6%;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.phases .track-line::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--orange),var(--yellow),var(--blue),#1f3f63);transform-origin:0;transform:scaleX(0);transition:transform 2.2s cubic-bezier(.3,.7,.2,1)}
+.phases.in .track-line::after{transform:scaleX(1)}
+.phase{position:relative;z-index:1}
+.phase .num{width:70px;height:70px;border-radius:22px;display:grid;place-items:center;font-family:Nunito;font-weight:900;font-size:28px;color:#fff;margin-bottom:22px;box-shadow:0 14px 30px -12px var(--c)}
+.phase .card{padding:24px;height:calc(100% - 92px)}
+.phase .wk{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--bg-2);color:var(--ink-2);margin-bottom:12px}
+.phase h3{font-size:22px;font-weight:900;margin-bottom:8px}
+.phase p{font-size:14.5px;color:var(--ink-2)}
+.note{display:flex;gap:14px;align-items:flex-start;margin-top:36px;padding:18px 22px;border-radius:18px;background:var(--yellow-soft);border:1px solid #F7DFA6;color:#6B4E0E;font-size:15px}
+.note svg{flex:none;width:22px;height:22px;margin-top:2px}
+.note.orange{background:var(--orange-soft);border-color:#F4CFC2;color:#7A2E17}
+.note.blue{background:var(--blue-soft);border-color:#CFDDEE;color:#24466D}
+
+/* ---------- Bento (Fase 1) ---------- */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.bento .card{padding:26px}
+.bento .c1{grid-column:span 3}.bento .c2{grid-column:span 3}
+.bento .c3,.bento .c4,.bento .c5{grid-column:span 2}
+.bento .c6{grid-column:span 6;display:grid;grid-template-columns:1fr 1.2fr;gap:28px;align-items:center;background:linear-gradient(135deg,#fff 40%,var(--orange-soft))}
+.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;margin-bottom:16px}
+.ic svg{width:22px;height:22px}
+.ic.o{background:var(--orange-soft);color:var(--orange)}
+.ic.b{background:var(--blue-soft);color:var(--blue)}
+.ic.y{background:var(--yellow-soft);color:#C48A0F}
+.bento h3{font-size:20px;font-weight:900;margin-bottom:6px}
+.bento p{color:var(--ink-2);font-size:15px}
+.stepno{position:absolute;top:22px;right:24px;font-family:Nunito;font-weight:900;font-size:40px;color:#F2EEEA;line-height:1}
+.mini-ch{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.queues{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.queue{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:12px;background:var(--bg-2);font-size:13px;font-weight:600}
+.queue .bar2{flex:1;margin-inline:12px;height:6px;border-radius:6px;background:#EEE9E4;overflow:hidden}
+.queue .bar2 i{display:block;height:100%;border-radius:6px}
+.roles{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.role{font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px}
+.flowmini{display:flex;flex-direction:column;gap:10px}
+.flowmini .fm{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);font-size:14px;font-weight:600}
+.flowmini .fm span{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex:none}
+.check{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:#1F8A4C;font-size:14px;margin-top:16px}
+
+/* ---------- Treinamento ---------- */
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.tracks .card{padding:34px}
+.tracks h3{font-size:26px;font-weight:900;margin:14px 0 14px}
+.kv{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.kv span{font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--bg-2);color:var(--ink-2)}
+.kv span b{color:var(--ink)}
+ul.clean{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+ul.clean li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px}
+ul.clean li::before{content:"";flex:none;width:20px;height:20px;margin-top:2px;border-radius:6px;background:var(--orange-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D65F3B' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat}
+.tracks .blue-t ul.clean li::before{background-color:var(--blue-soft);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234472A3' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")}
+.emoji{font-size:30px;line-height:1}
+
+/* ---------- Klingo comparação ---------- */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.compare .card{padding:32px}
+.compare h3{font-size:22px;font-weight:900;display:flex;gap:10px;align-items:center;margin-bottom:22px}
+.badge{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.flow{display:flex;flex-direction:column;gap:0}
+.fstep{display:flex;gap:14px;align-items:center;position:relative;padding-bottom:18px}
+.fstep:not(:last-child)::after{content:"";position:absolute;left:17px;top:38px;bottom:2px;width:2px;background:var(--line)}
+.fstep .fi{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;font-size:13px;font-weight:800}
+.fstep .ft{font-size:15px;font-weight:600}
+.fstep .fs{font-size:12px;color:var(--ink-3);font-weight:600}
+.manual .fi{background:#F4F1EE;color:var(--ink-3)}
+.auto .fi{background:var(--blue-soft);color:var(--blue)}
+.auto .fstep:not(:last-child)::after{background:linear-gradient(var(--blue),#CFDDEE)}
+.auto .fstep.hi .fi{background:var(--orange);color:#fff}
+.caption{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);color:var(--ink-2);font-size:14.5px}
+
+/* ---------- Rotinas ---------- */
+.split{display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center}
+.table{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.trow{display:grid;grid-template-columns:1fr 1.3fr auto;gap:18px;align-items:center;padding:17px 22px;border-top:1px solid var(--line);transition:background .25s}
+.trow:hover{background:#FDFBF9}
+.trow.th{border-top:0;background:var(--bg-2);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.trow .r{font-weight:700;display:flex;gap:10px;align-items:center}
+.trow .g{color:var(--ink-2);font-size:14.5px}
+.status{font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.status.ok{background:#E8F7EE;color:#1F8A4C}
+.status.wait{background:var(--yellow-soft);color:#9C6C07}
+.table-wrap{overflow-x:auto}
+
+/* Phone mockup */
+.phone{position:relative;width:300px;max-width:100%;margin-inline:auto;aspect-ratio:300/610;border-radius:46px;background:#16161D;padding:11px;box-shadow:0 50px 90px -30px rgba(23,23,31,.45),inset 0 0 0 2px #2c2c36}
+.phone .screen{position:relative;height:100%;border-radius:36px;overflow:hidden;background:#EFE7DE;display:flex;flex-direction:column}
+.phone .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:92px;height:26px;border-radius:20px;background:#16161D;z-index:3}
+.wa-head{background:#fff;padding:44px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #eee}
+.wa-head .av{width:34px;height:34px}
+.wa-head .n{font-weight:700;font-size:13.5px;line-height:1.2}
+.wa-head .s{font-size:11px;color:#1F8A4C}
+.wa-body{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:7px;overflow:hidden;background-color:#EFE7DE;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:14px 14px}
+.wb{max-width:84%;padding:7px 10px 16px;border-radius:10px;font-size:12px;line-height:1.45;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.06)}
+.wb .t{position:absolute;right:8px;bottom:3px;font-size:9.5px;color:#8a8a8a}
+.wb.l{background:#fff;align-self:flex-start;border-top-left-radius:3px}
+.wb.r{background:#D9FDD3;align-self:flex-end;border-top-right-radius:3px}
+.wb .btns{display:flex;flex-direction:column;margin:8px -10px -16px;border-top:1px solid #eee}
+.wb .btns span{text-align:center;padding:7px;color:#1B8FD6;font-weight:600;font-size:12px;border-top:1px solid #f1f1f1}
+.wb .btns span:first-child{border-top:0}
+.daypill{align-self:center;font-size:10.5px;background:#fff;padding:3px 10px;border-radius:8px;color:#666;box-shadow:0 1px 1px rgba(0,0,0,.05)}
+.wa-foot{background:#F4F1EC;padding:8px 10px 18px;display:flex;gap:8px;align-items:center}
+.wa-foot div{flex:1;height:34px;border-radius:20px;background:#fff}
+.wa-foot span{width:34px;height:34px;border-radius:50%;background:#1F8A4C;display:grid;place-items:center}
+/* Animated list */
+.alist>*{opacity:0;transform:translateY(10px) scale(.97);transition:opacity .45s ease,transform .45s cubic-bezier(.2,.8,.2,1)}
+.alist>*.show{opacity:1;transform:none}
+.typing{display:inline-flex;gap:3px;padding:10px 12px!important}
+.typing i{width:6px;height:6px;border-radius:50%;background:#9a9a9a;animation:typ 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes typ{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
+.floating{position:absolute;z-index:4;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px;box-shadow:var(--shadow);font-size:12.5px;font-weight:700;display:flex;gap:8px;align-items:center;animation:float 5s ease-in-out infinite;white-space:nowrap}
+@keyframes float{50%{transform:translateY(-8px)}}
+
+/* ---------- Integração ---------- */
+.mech{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mech h3{font-size:20px;font-weight:900;margin-bottom:8px}
+.mech p{color:var(--ink-2);font-size:15px}
+.terminal{margin-top:28px;border-radius:18px;background:#16161D;color:#E7E3DE;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;line-height:1.75;overflow:hidden;box-shadow:0 40px 80px -30px rgba(23,23,31,.5)}
+.terminal .bar{display:flex;gap:8px;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+.terminal .bar i{width:10px;height:10px;border-radius:50%;display:block}
+.terminal .bar b{margin-left:10px;font-weight:500;color:#8C8A93;font-size:12px}
+.terminal pre{margin:0;padding:18px 20px;overflow-x:auto}
+.c-o{color:#F59A77}.c-b{color:#8FB4DB}.c-y{color:#F5C866}.c-g{color:#7ED6A0}.c-m{color:#6F6D78}
+
+/* ---------- CRM ---------- */
+.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:28px}
+.fn{position:relative;padding:18px 18px 18px 30px;background:#fff;border:1px solid var(--line);font-weight:800;font-family:Nunito;font-size:17px;display:flex;flex-direction:column;gap:2px;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%,18px 50%)}
+.fn:first-child{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 50%,calc(100% - 18px) 100%,0 100%);border-radius:16px 0 0 16px;padding-left:20px}
+.fn small{font-family:"Plus Jakarta Sans";font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
+.kanban{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;padding:16px;background:#FAF8F6;min-width:640px}
+.col{background:#F2EEEA;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.col .ct{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800;padding:2px 4px 6px}
+.col .ct span{font-size:11px;background:#fff;border-radius:999px;padding:1px 8px;color:var(--ink-2)}
+.lead-c{background:#fff;border-radius:11px;padding:10px;font-size:12px;box-shadow:0 1px 2px rgba(0,0,0,.05);border:1px solid #EEE9E4}
+.lead-c .ln{font-weight:700;font-size:12.5px}
+.lead-c .lm{display:flex;justify-content:space-between;align-items:center;margin-top:6px;color:var(--ink-3);font-size:11px}
+.lead-c.stale{border-color:#F4CFC2;box-shadow:0 0 0 3px rgba(214,95,59,.1)}
+.lead-c.stale .lm b{color:var(--orange)}
+.stairs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:end}
+.stair{position:relative;padding:22px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.stair:nth-child(1){min-height:170px}.stair:nth-child(2){min-height:200px}.stair:nth-child(3){min-height:230px}
+.stair .sn{font-family:Nunito;font-weight:900;font-size:14px;color:var(--ink-3)}
+.stair .sd{font-family:Nunito;font-weight:900;font-size:30px;margin:4px 0 8px}
+.stair p{font-size:14.5px;color:var(--ink-2)}
+.crm-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:40px;align-items:start}
+
+/* ---------- IA ---------- */
+.ia-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:center}
+.ia-steps{display:flex;flex-direction:column;gap:12px}
+.ia-step{display:flex;gap:16px;align-items:flex-start;padding:18px 20px;border-radius:18px;background:#fff;border:1px solid var(--line);transition:all .4s}
+.ia-step .si{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--bg-2);color:var(--ink-2);transition:all .4s}
+.ia-step .si svg{width:20px;height:20px}
+.ia-step h4{font-size:17px;font-weight:800}
+.ia-step p{font-size:14px;color:var(--ink-2)}
+.ia-step.act{border-color:#F4CFC2;box-shadow:0 18px 40px -20px rgba(214,95,59,.45);transform:translateX(6px)}
+.ia-step.act .si{background:var(--orange);color:#fff}
+.ia-step.human.act{border-color:#CFDDEE;box-shadow:0 18px 40px -20px rgba(68,114,163,.45)}
+.ia-step.human.act .si{background:var(--blue)}
+.quote{font-family:Nunito;font-weight:800;font-size:15px;color:var(--orange);margin-top:4px}
+.ai-tag{display:inline-flex;align-items:center;gap:5px;font-size:9.5px;font-weight:800;letter-spacing:.06em;color:var(--blue);margin-bottom:3px}
+
+/* ---------- Pré-requisitos ---------- */
+.req .trow{grid-template-columns:34px 1fr 1.3fr}
+.req .idx{width:30px;height:30px;border-radius:9px;background:var(--bg-2);display:grid;place-items:center;font-weight:800;font-size:13px;color:var(--ink-2)}
+.req .trow.warn{background:linear-gradient(90deg,var(--yellow-soft),#fff)}
+.req .trow.warn .idx{background:var(--yellow);color:#fff}
+
+/* ---------- Riscos ---------- */
+.risks{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.risk{padding:30px}
+.risk .rh{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.risk .re{font-size:26px;width:52px;height:52px;border-radius:16px;display:grid;place-items:center;flex:none}
+.risk h3{font-size:20px;font-weight:900}
+.risk p{color:var(--ink-2);font-size:15px}
+.mit{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--bg-2);font-size:14px;color:var(--ink-2)}
+.mit b{color:var(--ink)}
+
+/* ---------- Forma de trabalhar ---------- */
+.ways{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ways h3{font-size:21px;font-weight:900;margin:14px 0 10px}
+.ways p{color:var(--ink-2);font-size:15px}
+.wa-num{display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:10px 16px;border-radius:14px;background:#E8F7EE;color:#146B3A;font-weight:800;font-size:17px;text-decoration:none}
+
+/* ---------- Próximos passos ---------- */
+.next{background:var(--ink);color:#fff;overflow:hidden}
+.next .dots{background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1px)}
+.next h2{color:#fff}
+.next .lead{color:#B9B7C0}
+.next .eyebrow{color:var(--yellow)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.action{position:relative;border-radius:var(--radius);padding:30px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1)}
+.action .an{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;font-family:Nunito;font-weight:900;font-size:22px;color:#fff;margin-bottom:18px}
+.action h3{font-size:22px;font-weight:900;margin-bottom:16px;color:#fff}
+.action .row{display:flex;gap:10px;font-size:14.5px;color:#C9C7CF;margin-top:6px}
+.action .row b{color:#fff}
+.meeting{margin-top:22px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;padding:24px 28px;border-radius:var(--radius);background:linear-gradient(120deg,var(--orange),#C24F2E)}
+.meeting .mt{font-family:Nunito;font-weight:900;font-size:22px}
+.meeting p{color:#FFE3D8}
+.count{display:flex;gap:10px}
+.count div{background:rgba(255,255,255,.15);border-radius:12px;padding:8px 12px;text-align:center;min-width:62px}
+.count b{display:block;font-family:Nunito;font-size:24px;font-weight:900;line-height:1.1}
+.count span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#FFE3D8}
+.thanks{text-align:center;margin-top:96px}
+.thanks h3{font-size:clamp(28px,4vw,44px);font-weight:900}
+.thanks img{height:44px;margin-top:34px;background:#fff;padding:10px 18px;border-radius:14px}
+
+/* ---------- Responsive ---------- */
+@media (max-width:980px){
+  section{padding-block:84px}
+  .hero-grid,.split,.ia-grid,.crm-grid{grid-template-columns:1fr}
+  .orbit{max-width:380px}
+  .hub{grid-template-columns:1fr;gap:28px;justify-items:stretch}
+  .hub svg.beams{display:none}
+  .channels{display:grid;grid-template-columns:1fr 1fr}
+  .hubcore{justify-self:center;margin-bottom:26px}
+  .phases{grid-template-columns:1fr 1fr}
+  .phases .track-line{display:none}
+  .bento .c1,.bento .c2,.bento .c3,.bento .c4,.bento .c5{grid-column:span 6}
+  .bento .c6{grid-template-columns:1fr}
+  .tracks,.compare,.risks,.actions{grid-template-columns:1fr}
+  .mech,.ways{grid-template-columns:1fr}
+  .slide-no{display:none}
+}
+@media (max-width:620px){
+  .wrap{padding-inline:18px}
+  .meta{grid-template-columns:1fr}
+  .channels{grid-template-columns:1fr}
+  .phases{grid-template-columns:1fr}
+  .inbox{grid-template-columns:44px 1fr;}
+  .inbox .chatpane{display:none}
+  .funnel{grid-template-columns:1fr 1fr;gap:8px}
+  .fn,.fn:first-child{clip-path:none;border-radius:14px;padding-left:18px}
+  .stairs{grid-template-columns:1fr}
+  .stair{min-height:0!important}
+  .trow{grid-template-columns:1fr;gap:6px}
+  .trow.th{display:none}
+  .req .trow{grid-template-columns:34px 1fr}
+  .req .trow .g{grid-column:2}
+  .floating{display:none}
+  .topbar .tag .pill{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .bf,.alist>*{opacity:1;filter:none;transform:none}
+}
+@media print{
+  .topbar{display:none}
+  .bf,.alist>*{opacity:1!important;filter:none!important;transform:none!important}
+  section{page-break-after:always;padding-block:48px}
+}
+
+/* ===== v2 ===== */
+.orbit .core img{width:64%}
+.hubcore img{width:72px}
+.hubcore .lbl{bottom:-54px;text-align:center;line-height:1.35;font-weight:500;color:var(--ink-3)}
+.hubcore .lbl b{color:var(--ink)}
+.marquee .pill svg{flex:none}
+.phase .card h3{margin-bottom:10px}
+.phase .wk{margin-bottom:12px}
+.subh{font-size:22px;font-weight:900;margin-bottom:16px}
+.fn small{font-size:12px}
+.avatars{display:flex;margin-top:18px}
+.avatars span{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;border:3px solid #fff;margin-right:-8px;box-shadow:var(--shadow)}
+.avatars span svg{width:18px;height:18px}
+.dotsrow{display:flex;gap:8px;margin-top:20px}
+.dotsrow i{width:34px;height:12px;border-radius:999px;display:block}
+.flowsvg{width:100%;max-width:240px;margin-top:16px;display:block}
+.okbadge{margin-top:18px;width:40px;height:40px;border-radius:12px;background:#E8F7EE;color:#1F8A4C;display:grid;place-items:center}
+.queue{padding:8px 0;background:none}
+.queue .bar2{margin:0}
+.fstep .fi{align-self:flex-start}
+.fstep .ft{padding-top:7px}
+.manual .fstep:not(:last-child)::after,.auto .fstep:not(:last-child)::after{top:40px}
+.doc{margin-top:6px;padding:8px 10px;border-radius:8px;background:#F3F6F9;font-weight:600;font-size:11.5px}
+.wb.agent{background:#fff;border-left:3px solid var(--blue)}
+.sim-body .ai-tag{display:flex}
+.ai-tag.human{color:var(--orange)}
+.mit-i{display:block;margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--bg-2);font-size:14px;color:var(--ink-2)}
+.mit-i b{color:var(--ink)}
+.ways h3{margin-top:0}
+.tracks h3{margin-top:0}
+.wa-inline{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:999px;background:#E8F7EE;color:#146B3A;font-weight:800;text-decoration:none;white-space:nowrap}
+
+/* Simulador WhatsApp */
+.sim-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.phone-lg{width:340px;aspect-ratio:340/680}
+.wa-head{position:relative}
+.sim-reset{margin-left:auto;width:30px;height:30px;border-radius:50%;border:1px solid #eee;background:#fff;font-size:16px;cursor:pointer;color:var(--ink-2)}
+.sim-reset:hover{background:var(--orange-soft);color:var(--orange)}
+.sim-body{overflow-y:auto;scroll-behavior:smooth;scrollbar-width:none}
+.sim-body::-webkit-scrollbar{display:none}
+.sim-body>*{animation:pop .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
+.sim-sys{align-self:center;font-size:10.5px;font-weight:700;background:#FFF6DB;color:#7A5A0C;padding:4px 10px;border-radius:8px;text-align:center}
+.sim-sys.blue{background:#E6EFF9;color:#24466D}
+.sim-sys.green{background:#E3F6EA;color:#146B3A}
+.sim-quick{display:flex;gap:6px;overflow-x:auto;padding:6px 10px 2px;background:#F4F1EC;scrollbar-width:none}
+.sim-quick::-webkit-scrollbar{display:none}
+.sim-quick:empty{display:none}
+.sim-quick button{flex:none;border:1px solid #D9E7F5;background:#fff;color:#1B8FD6;font:600 11.5px "Plus Jakarta Sans",sans-serif;padding:6px 11px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.sim-quick button:hover{background:#EEF6FD}
+.sim-foot{margin:0}
+.sim-foot input{flex:1;height:36px;border-radius:20px;border:0;background:#fff;padding:0 14px;font:500 13px "Plus Jakarta Sans",sans-serif;outline:none;min-width:0}
+.sim-foot input:focus{box-shadow:0 0 0 2px rgba(31,138,76,.25)}
+.sim-foot button{width:36px;height:36px;border-radius:50%;background:#1F8A4C;border:0;display:grid;place-items:center;cursor:pointer;flex:none}
+.sim-hint{font-size:12.5px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;gap:8px}
+.sim-hint::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--wa);animation:ping 2s infinite}
+
+/* Fase 4 fluxo horizontal */
+.hflow{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.hflow::before{content:"";position:absolute;top:27px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,var(--orange),var(--yellow),var(--blue),#1F8A4C,var(--ink));opacity:.35}
+.hstep{position:relative;text-align:left}
+.hn{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;color:#fff;margin-bottom:16px;box-shadow:0 12px 26px -12px rgba(23,23,31,.5)}
+.hn svg{width:24px;height:24px}
+.hstep h4{font-size:17px;font-weight:900;margin-bottom:6px}
+.hstep p{font-size:14px;color:var(--ink-2)}
+.inbox-ai{grid-template-columns:52px 1fr 220px;height:330px}
+.sys{align-self:center;font-size:10.5px;font-weight:700;background:#FFF6DB;color:#7A5A0C;padding:3px 10px;border-radius:8px}
+.sys.ok{background:#E3F6EA;color:#146B3A}
+.aside{border-left:1px solid var(--line);padding:14px;display:flex;flex-direction:column;gap:6px;background:#fff}
+.as-t{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.slot{font-size:12px;font-weight:600;padding:7px 10px;border-radius:9px;background:var(--bg-2);color:var(--ink-2)}
+.slot.on{background:var(--blue);color:#fff}
+
+/* Próximos passos claro (logo transparente) */
+.next{background:var(--bg-2);color:var(--ink)}
+.next .dots{background-image:radial-gradient(rgba(23,23,31,.13) 1px,transparent 1px)}
+.next h2{color:var(--ink)}
+.next .lead{color:var(--ink-2)}
+.action{background:#fff;border:1px solid var(--line)}
+.action h3{color:var(--ink)}
+.action .row{color:var(--ink-2)}
+.action .row b{color:var(--ink);margin-left:4px}
+.meeting .mt{font-size:21px;line-height:1.4}
+.meeting .mt span{font-family:"Plus Jakarta Sans",sans-serif;font-weight:500;font-size:16px;color:#FFE3D8}
+.thanks h3 .grad{display:block}
+.thanks img{background:none;padding:0;height:72px;border-radius:0}
+
+@media (max-width:980px){
+  .hflow{grid-template-columns:1fr 1fr}
+  .hflow::before{display:none}
+  .inbox-ai{grid-template-columns:44px 1fr}
+  .inbox-ai .aside{display:none}
+  .hubcore{margin-bottom:60px}
+}
+@media (max-width:620px){
+  .hflow{grid-template-columns:1fr}
+  .inbox-ai .chatpane{display:flex}
+  .phone-lg{width:100%;max-width:340px}
+}
+
+/* ===== Modo apresentação ===== */
+.present-btn{display:inline-flex;align-items:stretch;border-radius:999px;background:var(--ink);color:#fff;overflow:visible;position:relative;box-shadow:0 8px 20px -10px rgba(23,23,31,.6)}
+.present-btn button{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;font:700 14px "Plus Jakarta Sans",sans-serif;padding:9px 16px}
+.present-btn button:hover{background:rgba(255,255,255,.08)}
+.present-btn .main{border-radius:999px 0 0 999px}
+.present-btn .caret{padding:9px 12px 9px 10px;border-left:1px solid rgba(255,255,255,.15);border-radius:0 999px 999px 0}
+.present-btn svg{width:14px;height:14px}
+.present-menu{position:absolute;top:calc(100% + 8px);right:0;min-width:200px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 20px 40px -16px rgba(23,23,31,.3);padding:6px;display:none;z-index:60}
+.present-menu.open{display:block}
+.present-menu button{display:block;width:100%;box-sizing:border-box;color:var(--ink);font-weight:600;padding:10px 12px;border-radius:9px}
+.present-menu button:hover{background:var(--bg-2)}
+.topbar .tag{gap:12px}
+
+body.presenting{overflow:hidden}
+body.presenting .topbar{display:none}
+body.presenting section{display:none}
+body.presenting section.p-active{display:flex;position:fixed;inset:0;z-index:40;align-items:center;justify-content:center;padding:0 0 64px;overflow:hidden;animation:pIn .55s cubic-bezier(.2,.7,.2,1)}
+body.presenting section.p-active.hero{padding-top:0}
+body.presenting section.p-active>.wrap{flex:none;width:1180px;max-width:none;transform-origin:center center}
+body.presenting .slide-no{top:22px;right:28px}
+@keyframes pIn{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:none}}
+.p-controls{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:70;display:none;align-items:center;gap:4px;padding:6px;border-radius:999px;background:rgba(23,23,31,.9);backdrop-filter:blur(10px);color:#fff;box-shadow:0 16px 40px -14px rgba(0,0,0,.5);transition:opacity .4s}
+body.presenting .p-controls{display:flex}
+body.presenting.idle .p-controls{opacity:0}
+body.presenting.idle{cursor:none}
+.p-controls button{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;display:grid;place-items:center}
+.p-controls button:hover{background:rgba(255,255,255,.12)}
+.p-controls button svg{width:18px;height:18px}
+.p-controls .cnt{font:700 13px "Plus Jakarta Sans",sans-serif;min-width:64px;text-align:center;font-variant-numeric:tabular-nums}
+.p-bar{position:fixed;left:0;top:0;height:3px;z-index:70;background:linear-gradient(90deg,var(--orange),var(--yellow),var(--blue));display:none;transition:width .4s}
+body.presenting .p-bar{display:block}
+@media (max-width:620px){.present-btn .main span{display:none}.topbar .tag .pill{display:none}}
+
+/* ===== Apresentação: palco 16:9 fixo (1600x900), mesmo enquadramento em todos os slides ===== */
+body.presenting section.p-active{padding:0!important;align-items:center;justify-content:center}
+body.presenting section.p-active>.wrap{width:1600px!important;height:900px;padding:64px 80px 76px!important;display:flex;flex-direction:column;justify-content:flex-start;position:relative;transform-origin:center center;
+  background-image:url(logo-kualiz.png);background-repeat:no-repeat;background-size:auto 30px;background-position:80px calc(100% - 26px)}
+body.presenting section.p-active>.wrap::after{content:attr(data-no);position:absolute;right:80px;bottom:30px;font:800 13px Nunito,sans-serif;letter-spacing:.12em;color:var(--ink-3)}
+body.presenting .slide-no{display:none}
+body.presenting .head{margin-bottom:30px;flex:none}
+body.presenting h2{font-size:44px;max-width:1300px}
+body.presenting .lead{font-size:18px;max-width:1240px;margin-top:12px}
+body.presenting .note{margin-top:22px;padding:14px 20px}
+body.presenting .card{padding:22px}
+/* capa */
+body.presenting .hero-grid{flex:1;gap:40px}
+body.presenting .hero h1{font-size:76px}
+body.presenting .orbit{max-width:520px}
+/* 02 canais */
+body.presenting .marquee{margin-top:40px}
+body.presenting .hub{gap:64px}
+/* 03 fases */
+body.presenting .phases{gap:24px;margin-top:10px}
+/* 04 bento */
+body.presenting .bento{gap:16px}
+body.presenting .bento .card{padding:22px 24px}
+body.presenting .bento p{font-size:14.5px}
+/* 05 treinamento */
+body.presenting .tracks .card{padding:30px}
+/* 06 klingo */
+body.presenting .compare .card{padding:24px 28px}
+body.presenting .fstep{padding-bottom:12px}
+body.presenting .caption{margin-top:12px;padding-top:12px}
+/* 07 rotinas */
+body.presenting .split{gap:60px;grid-template-columns:1.4fr .6fr}
+body.presenting .trow{padding:14px 22px}
+/* 08 integração */
+body.presenting .terminal{margin-top:20px}
+/* 09 crm */
+body.presenting #s9 .head{margin-bottom:18px}
+body.presenting #s9 .browser{margin-bottom:18px!important}
+body.presenting .crm-grid{grid-template-columns:.8fr 1.2fr;gap:36px;align-items:center}
+/* 10 simulador */
+body.presenting #s10 .ia-grid{gap:80px;grid-template-columns:auto 1fr;flex:1;min-height:0}
+body.presenting .sim-wrap{gap:8px}
+body.presenting .ia-step{padding:14px 18px}
+/* 11 fase 4 */
+body.presenting #s11 .head{margin-bottom:22px}
+body.presenting #s11 .lead{margin-top:8px}
+body.presenting #s11 .browser{margin-top:22px!important}
+/* 12-14 */
+body.presenting .risks{gap:16px}
+body.presenting .risk{padding:22px 26px}
+body.presenting .mit-i{margin-top:10px;padding:10px 14px}
+/* 15 */
+body.presenting .meeting{margin-top:16px;padding:20px 26px}
+body.presenting .thanks{margin-top:40px}
+body.presenting .thanks img{height:56px;margin-top:20px}
+body.presenting #s15 .action{padding:24px}
+body.presenting section.p-active>.wrap.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;align-content:center}
+
+body.presenting .sim-hint{display:none}
+body.presenting #s14 .ways .card{padding:30px;min-height:300px}
+body.presenting #s14 .ways p{font-size:16.5px}
+body.presenting #s5 .tracks .card{padding:36px}
+body.presenting #s5 ul.clean li{font-size:17px}
+
+/* p-body: agrupa o conteúdo abaixo do título; na apresentação escala por inteiro (proporção preservada) */
+[hidden]{display:none!important}
+.p-body{display:contents}
+body.presenting section.p-active .p-body{display:block;transform-origin:top center;will-change:transform}
+/* ícones no lugar de emojis */
+.ico{width:1.05em;height:1.05em;display:inline-block;vertical-align:-.18em;flex:none}
+.k .ico{width:14px;height:14px;color:var(--orange);margin-right:2px}
+.hic{width:38px;height:38px;border-radius:12px;display:inline-grid;place-items:center;margin-right:12px;vertical-align:middle;flex:none}
+.hic svg{width:20px;height:20px}
+.hic.o{background:var(--orange-soft);color:var(--orange)}.hic.b{background:var(--blue-soft);color:var(--blue)}.hic.y{background:var(--yellow-soft);color:#C48A0F}.hic.g{background:#E8F7EE;color:#1F8A4C}.hic.r{background:#FDEDEA;color:#C2412D}
+.ways h3,.tracks h3{display:flex;align-items:center}
+.risk .re svg{width:24px;height:24px}
+.status .ico{margin-right:4px}
+.wb .ico{width:13px;height:13px;vertical-align:-2px}
+.wb .t .ico{width:13px;height:13px;color:#53BDEB;vertical-align:-3px}
+.ai-tag .ico{width:10px;height:10px;vertical-align:-1px}
+.sim-sys .ico,.sys .ico{width:11px;height:11px;vertical-align:-2px;margin-right:2px}
+.b .ico{width:12px;height:12px;vertical-align:-2px}
+.meeting .mt .ico{width:22px;height:22px;vertical-align:-4px;margin-right:6px}
+.sim-reset svg{width:14px;height:14px}
+.doc .ico{color:#C2412D;margin-right:4px}
+
+/* ===== Editor de informações ===== */
+.edit-btn{margin-top:18px;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px dashed #D9D2CB;background:#fff;color:var(--ink-2);font:600 14px "Plus Jakarta Sans",sans-serif;cursor:pointer;transition:all .25s}
+.edit-btn:hover{border-color:var(--orange);color:var(--orange);background:var(--orange-soft)}
+.edit-btn svg{width:16px;height:16px}
+body.presenting .edit-btn{display:none}
+.ed-overlay{position:fixed;inset:0;z-index:90;background:rgba(23,23,31,.28);backdrop-filter:blur(3px)}
+.ed-panel{position:fixed;top:12px;right:12px;bottom:12px;z-index:91;width:min(400px,calc(100vw - 24px));background:#fff;border-radius:22px;box-shadow:0 30px 80px -20px rgba(23,23,31,.45);display:flex;flex-direction:column;animation:edIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes edIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+.ed-head{display:flex;justify-content:space-between;gap:12px;padding:22px 22px 14px;border-bottom:1px solid var(--line)}
+.ed-title{font:900 20px Nunito,sans-serif}
+.ed-sub{font-size:13px;color:var(--ink-3);margin-top:2px}
+.ed-x{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);flex:none}
+.ed-x:hover{background:var(--bg-2)}
+.ed-x svg{width:18px;height:18px}
+.ed-form{flex:1;overflow-y:auto;padding:8px 22px 18px;display:flex;flex-direction:column;gap:12px}
+.ed-group{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-top:12px}
+.ed-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.ed-form input{height:42px;border-radius:12px;border:1px solid var(--line);background:var(--bg-2);padding:0 14px;font:500 15px "Plus Jakarta Sans",sans-serif;color:var(--ink);outline:none;transition:all .2s}
+.ed-form input:focus{border-color:var(--orange);background:#fff;box-shadow:0 0 0 4px rgba(214,95,59,.12)}
+.ed-foot{display:flex;gap:10px;padding:16px 22px 20px;border-top:1px solid var(--line)}
+.ed-foot button{height:44px;border-radius:12px;font:700 14px "Plus Jakarta Sans",sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.ed-secondary{border:1px solid var(--line);background:#fff;color:var(--ink-2);padding:0 16px}
+.ed-primary{flex:1;border:0;background:var(--ink);color:#fff}
+.ed-primary svg{width:16px;height:16px}
+.ed-primary.ok{background:#1F8A4C}
+
+/* ===== PDF (impressão): um slide 16:9 por página, com os dados preenchidos ===== */
+@page{size:1600px 900px;margin:0}
+body.printing{overflow:visible!important;background:#fff}
+body.printing *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body.printing .topbar,body.printing .p-controls,body.printing .p-bar,body.printing .edit-btn,body.printing .ed-panel,body.printing .ed-overlay,body.printing .sim-quick,body.printing .sim-reset{display:none!important}
+body.printing section.p-active{position:relative!important;inset:auto!important;z-index:auto;width:1600px;height:900px;overflow:hidden;animation:none!important;break-after:page;page-break-after:always;break-inside:avoid}
+body.printing section.p-active:last-of-type{break-after:auto;page-break-after:auto}
+body.printing section.p-active>.wrap{transform:none!important}
+body.printing .bf{opacity:1!important;filter:none!important;transform:none!important;transition:none!important}
+body.printing .alist>*{opacity:1!important;transform:none!important;transition:none!important}
+body.printing .sim-body>*{animation:none!important}
+body.printing .card:hover{transform:none}
+@media print{
+  .topbar,.p-controls,.p-bar,.edit-btn,.ed-panel,.ed-overlay{display:none!important}
+}
+.present-menu hr{border:0;border-top:1px solid var(--line);margin:4px 6px}
+
+.opt-wrap{position:relative}
+.opt-btn{all:unset;cursor:pointer;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2);border:1px solid var(--line)!important;background:#fff}
+.opt-btn:hover{background:var(--bg-2);color:var(--ink)}
+.opt-btn svg{width:18px;height:18px}
+.opt-menu{min-width:244px}
+.opt-menu button{display:flex;align-items:center;gap:10px;font-size:14px}
+.opt-menu button svg{width:16px;height:16px;flex:none;color:var(--ink-3)}
+.opt-menu button:hover svg{color:var(--orange)}
+body.presenting .opt-wrap{display:none}
+
+body.printing *{box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+body.printing .grad{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;-webkit-text-fill-color:currentColor!important;color:var(--orange)!important}
+body.printing .beam::after,body.printing .magic::before{display:none!important}
+body.printing .card,body.printing .browser,body.printing .phone,body.printing .terminal,body.printing .stair,body.printing .action{border:1px solid var(--line)}
+body.printing .phone{border-color:#16161D}
+</style>
+</head>
+<body>
+
+<!-- SVG sprite -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/><path fill="#fff" d="M17.3 14.4c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1l-.9 1.1c-.2.2-.3.2-.6.1a7.6 7.6 0 0 1-3.8-3.3c-.3-.5.3-.5.8-1.5.1-.2 0-.3 0-.5l-.9-2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.4 13.4 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><defs><linearGradient id="igg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#F5B93B"/><stop offset=".5" stop-color="#E1306C"/><stop offset="1" stop-color="#833AB4"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igg)"/><circle cx="12" cy="12" r="4.3" fill="none" stroke="#fff" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="#fff"/></symbol>
+    <symbol id="i-fb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#1877F2"/><path fill="#fff" d="M13.4 22v-7.3h2.4l.4-2.8h-2.8v-1.8c0-.8.2-1.4 1.4-1.4h1.5V6.2a19 19 0 0 0-2.2-.1c-2.2 0-3.7 1.3-3.7 3.8v2.1H8v2.8h2.4V22Z"/></symbol>
+    <symbol id="i-tg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#29A9EB"/><path fill="#fff" d="m6.2 11.7 10.3-4c.5-.2.9.1.8.9l-1.8 8.3c-.1.6-.5.7-1 .5l-2.7-2-1.3 1.3c-.2.2-.3.3-.6.3l.2-2.8 5-4.6c.2-.2 0-.3-.3-.1l-6.2 3.9-2.6-.8c-.6-.2-.6-.6.2-.9Z"/></symbol>
+    <symbol id="i-web" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="16" rx="4" fill="#4472A3"/><path fill="#fff" d="M7 9h10v1.6H7zm0 3.4h6.5V14H7z"/><path fill="#4472A3" d="M6 19h5l-5 3z"/></symbol>
+    <symbol id="i-logo" viewBox="0 0 100 92"><path fill="#D65F3B" d="M13 26h24a13 13 0 0 1 13 13v53L32 81H13A13 13 0 0 1 0 68V39a13 13 0 0 1 13-13Z"/><path fill="#4472A3" d="M56 26h31a11 11 0 0 1 11 11v26a11 11 0 0 1-11 11H72L56 83Z"/><path fill="#F5B93B" d="M29 0h27a9 9 0 0 1 9 9v17a9 9 0 0 1-9 9H44L29 44Z"/><g fill="#fff"><circle cx="24" cy="48" r="6.5"/><rect x="14" y="54" width="20" height="16" rx="8"/><circle cx="76" cy="43" r="5.5"/><rect x="67.5" y="48" width="17" height="13" rx="6.5"/><circle cx="46" cy="10.5" r="4.3"/><rect x="40" y="14" width="12.5" height="10" rx="5"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 2v6m6-6v6M6 8h12v4a6 6 0 0 1-12 0Zm6 10v4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m12 2 10 5-10 5L2 7Zm-10 10 10 5 10-5M2 17l10 5 10-5"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8ZM7 7h.01"/></symbol>
+    <symbol id="i-flow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 3v12m0 0a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm12-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm0 0a9 9 0 0 1-9 9"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1ZM12 15l-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22.4 22.4 0 0 1-4 2Zm-3-3H4s.6-3 2-4c1.6-1.1 5 0 5 0m1 7v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></symbol>
+    <symbol id="i-http" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m17 1 4 4-4 4M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4m14-2v2a4 4 0 0 1-4 4H3"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h9l-1 8 10-12h-9Z"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></g></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></symbol>
+    <symbol id="i-brain" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 5a3 3 0 1 0-6 .1 4 4 0 0 0-2.5 5.8A4 4 0 0 0 6 18a4 4 0 1 0 6 1Zm0 0a3 3 0 1 1 6 .1 4 4 0 0 1 2.5 5.8A4 4 0 0 1 18 18a4 4 0 1 1-6 1m3-6a3 3 0 0 1-3-3m-3 3a3 3 0 0 0 3-3"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18m-12 6 2 2 4-4"/></g></symbol>
+    <symbol id="i-headset" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 14v-2a9 9 0 0 1 18 0v2m0 0v3a2 2 0 0 1-2 2h-1v-7h3ZM3 14v3a2 2 0 0 0 2 2h1v-7H3Zm15 5a3 3 0 0 1-3 3h-3"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path fill="#fff" d="M3 20.5 21 12 3 3.5 3 10l12 2-12 2Z"/></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Zm0-10H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2m12-13h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2M10 6h4M10 10h4M10 14h4M10 18h4"/></symbol><symbol id="i-handshake" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m11 17 2 2a1 1 0 1 0 3-3m-2-2 2.5 2.5a1 1 0 1 0 3-3l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a2 2 0 0 1-2.8 0l-.3-.3a1 1 0 0 1 0-1.4l2.9-2.9a3.5 3.5 0 0 1 4.9 0l.7.7M21 3l1 11h-2M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3M3 4h8"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></symbol><symbol id="i-wrench" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9Z"/></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path fill="currentColor" d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol><symbol id="i-flask" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 2v7.5L4.5 19A2 2 0 0 0 6.2 22h11.6a2 2 0 0 0 1.7-3L14 9.5V2M8.5 2h7M7 16h10"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 13h8M8 17h5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></g></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5"/></symbol><symbol id="i-hourglass" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 22h14M5 2h14M17 22v-4.2a2 2 0 0 0-.6-1.4L12 12l-4.4 4.4a2 2 0 0 0-.6 1.4V22M7 2v4.2a2 2 0 0 0 .6 1.4L12 12l4.4-4.4a2 2 0 0 0 .6-1.4V2"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M18 17V9M13 17V5M8 17v-3"/></symbol><symbol id="i-thermo" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 4v10.5a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol><symbol id="i-sparkle" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.5l2.4 7.1 7.1 2.4-7.1 2.4L12 20.5l-2.4-7.1L2.5 11l7.1-2.4Z"/></symbol><symbol id="i-bot" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 8V4H8M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2Zm-4 6h2m16 0h2M9 13v2m6-2v2"/></symbol><symbol id="i-stetho" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 12 0V4a2 2 0 0 0-2-2h-1M8 15v1a6 6 0 0 0 12 0v-4"/><circle cx="20" cy="10" r="2"/></g></symbol><symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1Z"/></symbol><symbol id="i-dcheck" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M18 6 7 17l-5-5m20-2-7.5 7.5L13 16"/></symbol><symbol id="i-forward" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m15 17 5-5-5-5M4 18v-2a4 4 0 0 1 4-4h12"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 17-5-5 5-5M20 18v-2a4 4 0 0 0-4-4H4"/></symbol><symbol id="i-reset" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></symbol><symbol id="i-checkc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12.5 3 3 5-6"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <img src="logo-kualiz.png" alt="Kualiz">
+    <div class="tag"><span class="pill"><span class="dot"></span>Kick-off de Implantação Kualiz</span>
+      <div class="opt-wrap">
+        <button class="opt-btn" id="optBtn" aria-label="Opções"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg></button>
+        <div class="present-menu opt-menu" id="optMenu">
+          <button data-act="edit"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>Editar informações</button>
+          <button data-act="copy"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>Copiar link com os dados</button>
+          <button data-act="pdf"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Baixar PDF</button>
+          <hr>
+          <button data-act="clear"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14"/></svg>Limpar informações</button>
+        </div>
+      </div>
+      <div class="present-btn">
+        <button class="main" id="presentStart"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M7 4.5v15a1 1 0 0 0 1.5.9l12-7.5a1 1 0 0 0 0-1.8l-12-7.5A1 1 0 0 0 7 4.5Z"/></svg><span>Apresentar</span></button>
+        <button class="caret" id="presentCaret" aria-label="Opções de apresentação"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg></button>
+        <div class="present-menu" id="presentMenu"><button data-from="start">Do início</button><button data-from="current">Do slide atual</button><hr><button data-pdf>Baixar PDF</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<!-- 01 · CAPA -->
+<section class="hero" id="s1">
+  <div class="dots"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <h1 class="bf">Kick-off de <span class="grad">Implantação</span> Kualiz</h1>
+      <p class="lead bf">Bem-vindos ao início de uma nova era no atendimento de <span data-f="cliente">Nome do Cliente</span></p>
+      <div class="meta">
+        <div class="card magic bf"><div class="k"><svg class="ico"><use href="#i-cal"/></svg> Data</div><div class="v"><span data-f="data">dd/mm/aaaa</span></div></div>
+        <div class="card magic bf"><div class="k"><svg class="ico"><use href="#i-building"/></svg> Cliente</div><div class="v"><span data-f="cliente">Nome do Cliente</span></div></div>
+        <div class="card magic bf"><div class="k"><svg class="ico"><use href="#i-handshake"/></svg> Kualiz</div><div class="v"><span data-f="apresentador">Nome do apresentador</span> - Time de implantação</div></div>
+        <div class="card magic bf"><div class="k"><svg class="ico"><use href="#i-user"/></svg> Cliente</div><div class="v"><span data-f="contato">Nome do contato</span></div></div>
+      </div>
+      <button class="edit-btn bf" id="editOpen" type="button"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>Editar informações</button>
+    </div>
+    <div class="orbit bf">
+      <div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="core"><img src="logo-icon.png" alt=""></div>
+      <div class="orbiter" style="--d:34s;--r:50cqw"><div><div class="chip"><svg><use href="#i-wa"/></svg></div></div></div>
+      <div class="orbiter" style="--d:34s;--r:50cqw;--delay:-11.3s"><div><div class="chip"><svg><use href="#i-ig"/></svg></div></div></div>
+      <div class="orbiter" style="--d:34s;--r:50cqw;--delay:-22.6s"><div><div class="chip"><svg><use href="#i-fb"/></svg></div></div></div>
+      <div class="orbiter rev" style="--d:22s;--r:33cqw"><div><div class="chip sm"><svg><use href="#i-tg"/></svg></div></div></div>
+      <div class="orbiter rev" style="--d:22s;--r:33cqw;--delay:-11s"><div><div class="chip sm"><svg><use href="#i-web"/></svg></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · CANAIS -->
+<section class="alt" id="s2">
+  <span class="slide-no">02</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">Uma Porta só para o Cliente, <span class="hl">uma Tela só para a Equipe</span></h2>
+      <p class="lead bf">Todos os canais digitais do <span data-f="cliente">Nome do Cliente</span> convergem para uma única central operada pela sua equipe — sem alternar sistemas, sem perder histórico.</p>
+    </div>
+
+    <div class="hub" id="hub">
+      <svg class="beams" id="beams"></svg>
+      <div class="channels">
+        <div class="channel card bf" data-beam><div class="chip sm"><svg><use href="#i-wa"/></svg></div><div><h4>WhatsApp Oficial</h4><p>API Meta verificada</p></div></div>
+        <div class="channel card bf" data-beam><div class="chip sm"><svg><use href="#i-ig"/></svg></div><div><h4>Instagram · Facebook</h4><p>DMs e comentários</p></div></div>
+        <div class="channel card bf" data-beam><div class="chip sm"><svg><use href="#i-web"/></svg></div><div><h4>WebChat · Telegram</h4><p>Site e canal direto</p></div></div>
+      </div>
+      <div class="hubcore bf" id="hubcore"><img src="logo-icon.png" alt=""><span class="lbl"><b>Central Kualiz + CRM + IA</b><br>Tudo em uma tela</span></div>
+
+      <div class="browser bf" id="hubtarget">
+        <div class="bar"><i></i><i></i><i></i><div class="url">app.kualiz.com.br</div></div>
+        <div class="inbox">
+          <div class="rail"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+          <div class="list">
+            <div class="search"></div>
+            <div class="conv on"><div class="av" style="background:#D65F3B">MS<b style="background:#25D366"></b></div><div><div class="n">Maria Silva</div><div class="m">Quero remarcar minha consulta</div></div></div>
+            <div class="conv"><div class="av" style="background:#4472A3">JP<b style="background:#E1306C"></b></div><div><div class="n">João Pedro</div><div class="m">Vocês atendem convênio?</div></div></div>
+            <div class="conv"><div class="av" style="background:#F5B93B">AL<b style="background:#1877F2"></b></div><div><div class="n">Ana Lúcia</div><div class="m">Comentou no anúncio</div></div></div>
+            <div class="conv"><div class="av" style="background:#6B7A8F">RC<b style="background:#4472A3"></b></div><div><div class="n">Ricardo Costa</div><div class="m">Olá, bom dia!</div></div></div>
+            <div class="conv"><div class="av" style="background:#C24F2E">FB<b style="background:#29A9EB"></b></div><div><div class="n">Fernanda B.</div><div class="m">Resultado do exame</div></div></div>
+          </div>
+          <div class="chatpane">
+            <div class="ch"><div style="display:flex;gap:8px;align-items:center"><div class="av" style="background:#D65F3B;width:26px;height:26px;font-size:10px">MS</div><b style="font-size:12px">Maria Silva</b></div><div style="display:flex;gap:6px"><span class="tagx" style="background:var(--orange-soft);color:var(--orange)">WhatsApp</span></div></div>
+            <div class="msgs">
+              <div class="b in">Oi! Quero remarcar minha consulta de sexta</div>
+              <div class="b bot"><svg class="ico"><use href="#i-bot"/></svg> Claro, Maria! Tenho horários na segunda às 9h ou 14h30.</div>
+              <div class="b in">14h30 fica ótimo</div>
+              <div class="b out">Pronto, confirmado para segunda às 14h30 <svg class="ico"><use href="#i-checkc"/></svg></div>
+            </div>
+            <div class="compose"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="track"><span class="pill"><svg width="16" height="16"><use href="#i-wa"/></svg>WhatsApp Oficial</span><span class="pill"><svg width="16" height="16"><use href="#i-ig"/></svg>Instagram</span><span class="pill"><svg width="16" height="16"><use href="#i-fb"/></svg>Facebook</span><span class="pill"><svg width="16" height="16"><use href="#i-web"/></svg>WebChat</span><span class="pill"><svg width="16" height="16"><use href="#i-tg"/></svg>Telegram</span><span class="pill">CRM</span><span class="pill">IA</span></div>
+      <div class="track"><span class="pill"><svg width="16" height="16"><use href="#i-wa"/></svg>WhatsApp Oficial</span><span class="pill"><svg width="16" height="16"><use href="#i-ig"/></svg>Instagram</span><span class="pill"><svg width="16" height="16"><use href="#i-fb"/></svg>Facebook</span><span class="pill"><svg width="16" height="16"><use href="#i-web"/></svg>WebChat</span><span class="pill"><svg width="16" height="16"><use href="#i-tg"/></svg>Telegram</span><span class="pill">CRM</span><span class="pill">IA</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · FASES -->
+<section id="s3">
+  <span class="slide-no">03</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">A Implantação Acontece em <span class="hl">Quatro Fases</span> com Valor Entregue em Cada Uma</h2>
+      <p class="lead bf">Cada fase é independente: ao final dela, a equipe já opera com benefícios reais — sem precisar esperar a implantação completa.</p>
+    </div>
+    <div class="phases" id="phases">
+      <div class="track-line"></div>
+      <div class="phase bf"><div class="num" style="background:var(--orange);--c:rgba(214,95,59,.6)">1</div><div class="card magic"><h3>Fase 1 · Fundação</h3><span class="wk">Semanas [1–2]</span><p>Canais conectados, usuários criados, automações básicas e treinamento. A equipe já atende pela plataforma.</p></div></div>
+      <div class="phase bf"><div class="num" style="background:var(--yellow);--c:rgba(245,185,59,.7)">2</div><div class="card magic"><h3>Fase 2 · Klingo</h3><span class="wk">Semanas [2–3]</span><p>Integração com o sistema de agendamento: confirmações, marcações e resultados automatizados.</p></div></div>
+      <div class="phase bf"><div class="num" style="background:var(--blue);--c:rgba(68,114,163,.6)">3</div><div class="card magic"><h3>Fase 3 · CRM</h3><span class="wk">Semanas [3–5]</span><p>Funis de venda e recuperação ativos. Leads organizados e cobrados automaticamente.</p></div></div>
+      <div class="phase bf"><div class="num" style="background:linear-gradient(135deg,#2F5580,#17171F);--c:rgba(23,23,31,.5)">4</div><div class="card magic"><h3>Fase 4 · IA</h3><span class="wk">Semanas [5–6]</span><p>Assistente de IA agendando consultas de forma autônoma e escalando para humano quando necessário.</p></div></div>
+    </div>
+    <div class="note bf"><svg><use href="#i-alert"/></svg><p>Cronograma condicionado à entrega dos pré-requisitos listados no <a href="#s12" style="color:inherit;font-weight:700">slide 12</a>. As 4 fases são sequenciais — atrasos de um lado empurram todas as fases seguintes.</p></div>
+  </div>
+</section>
+
+<!-- 04 · FASE 1 -->
+<section class="alt" id="s4">
+  <span class="slide-no">04</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">Fase 1: Tudo que Será Configurado para <span class="hl">Dar Partida</span> no Atendimento</h2>
+    </div>
+    <div class="bento">
+      <div class="card magic bf c3"><span class="stepno">1</span><div class="ic o"><svg><use href="#i-plug"/></svg></div><h3>Canais conectados</h3><p>WhatsApp via API Oficial da Meta, Instagram, Facebook, WebChat e Telegram — todos na mesma tela.</p>
+        <div class="mini-ch"><div class="chip sm"><svg><use href="#i-wa"/></svg></div><div class="chip sm"><svg><use href="#i-ig"/></svg></div><div class="chip sm"><svg><use href="#i-fb"/></svg></div><div class="chip sm"><svg><use href="#i-web"/></svg></div><div class="chip sm"><svg><use href="#i-tg"/></svg></div></div>
+      </div>
+      <div class="card magic bf c4"><span class="stepno">2</span><div class="ic b"><svg><use href="#i-users"/></svg></div><h3>Usuários e permissões</h3><p>Criação de perfis de agente, supervisor e administrador com níveis de acesso distintos.</p>
+        <div class="avatars"><span style="background:var(--orange)"><svg><use href="#i-users"/></svg></span><span style="background:var(--blue)"><svg><use href="#i-users"/></svg></span><span style="background:var(--yellow)"><svg><use href="#i-users"/></svg></span></div>
+      </div>
+      <div class="card magic bf c5"><span class="stepno">3</span><div class="ic y"><svg><use href="#i-layers"/></svg></div><h3>Filas de atendimento</h3><p>Organização por especialidade, turno ou setor — cada fila com regras próprias de distribuição.</p>
+        <div class="queues">
+          <div class="queue"><span class="bar2"><i style="width:78%;background:var(--orange)"></i></span></div>
+          <div class="queue"><span class="bar2"><i style="width:46%;background:var(--blue)"></i></span></div>
+          <div class="queue"><span class="bar2"><i style="width:22%;background:var(--yellow)"></i></span></div>
+        </div>
+      </div>
+      <div class="card magic bf c3"><span class="stepno">1</span><div class="ic o"><svg><use href="#i-tag"/></svg></div><h3>Etiquetas e motivos de pausa</h3><p>Classificação de chats e contatos por tipo; controle de produtividade da equipe com pausas nomeadas.</p>
+        <div class="dotsrow"><i style="background:var(--orange)"></i><i style="background:var(--blue)"></i><i style="background:var(--yellow)"></i><i style="background:#8FB4DB"></i></div>
+      </div>
+      <div class="card magic bf c4"><span class="stepno">2</span><div class="ic b"><svg><use href="#i-flow"/></svg></div><h3>Fluxos de automação base</h3><p>Triagem por menu, horário de funcionamento e transferência entre filas configurados desde o dia 1.</p>
+        <svg class="flowsvg" viewBox="0 0 220 60"><circle cx="16" cy="30" r="9" fill="#D65F3B"/><path d="M26 30h40M66 30c20 0 20-18 40-18M66 30c20 0 20 18 40 18" stroke="#E0D9D2" stroke-width="2" fill="none"/><rect x="108" y="4" width="40" height="16" rx="8" fill="#EDF3FA"/><rect x="108" y="40" width="40" height="16" rx="8" fill="#FEF7E6"/><path d="M150 12h30M150 48h30" stroke="#E0D9D2" stroke-width="2"/><circle cx="192" cy="12" r="8" fill="#4472A3"/><circle cx="192" cy="48" r="8" fill="#F5B93B"/></svg>
+      </div>
+      <div class="card beam magic bf c5"><span class="stepno">3</span><div class="ic o"><svg><use href="#i-rocket"/></svg></div><h3>Entrega da Fase 1</h3><p>Equipe operando na plataforma com todos os canais ativos e automações básicas funcionando.</p>
+        <div class="okbadge"><svg width="18" height="18"><use href="#i-check"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · TREINAMENTO -->
+<section id="s5">
+  <span class="slide-no">05</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">O Treinamento Tem Duas Trilhas: <span class="hl">Quem Configura</span> e <span class="hl-blue">Quem Atende</span></h2>
+      <p class="lead bf">Separamos o conteúdo por perfil para que cada pessoa aprenda exatamente o que precisa — sem sobrecarga e sem lacunas.</p>
+    </div>
+    <div class="tracks">
+      <div class="card beam magic bf">
+        <h3><span class="hic o"><svg class=""><use href="#i-wrench"/></svg></span>Trilha Administradores</h3>
+        <div class="kv"><span><b>Quem:</b> gestores e responsáveis pela plataforma</span><span><b>Duração:</b> 2 [online]</span></div>
+        <ul class="clean"><li>Criação e edição de filas e usuários</li><li>Construção e edição de automações</li><li>Leitura de relatórios e exportações</li><li>Gestão de etiquetas e motivos de pausa</li></ul>
+      </div>
+      <div class="card beam blue-beam magic bf blue-t">
+        <h3><span class="hic b"><svg class=""><use href="#i-msg"/></svg></span>Trilha Agentes</h3>
+        <div class="kv"><span><b>Quem:</b> recepcionistas e atendentes</span><span><b>Duração:</b> [30 min] — [online]</span></div>
+        <ul class="clean"><li>Rotina de atendimento no dia a dia</li><li>Uso de etiquetas e transferências</li><li>Registro de pausas e encerramento de chats</li><li>Boas práticas de comunicação digital</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · KLINGO -->
+<section class="alt" id="s6">
+  <span class="slide-no">06</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">O Klingo Vem em Segundo porque <span class="hl">Elimina Trabalho Manual</span> Imediatamente</h2>
+      <p class="lead bf">Após a equipe já operar no Kualiz, integramos o sistema de agendamento [Klingo]. A escolha da ordem não é aleatória: a integração exige maturidade operacional — e entrega o maior ganho de tempo para a recepção.</p>
+    </div>
+    <div class="compare">
+      <div class="card bf manual">
+        <h3><span class="badge" style="background:#F4F1EE;color:var(--ink-3)">Sem integração</span></h3>
+        <div class="flow">
+          <div class="fstep"><div class="fi"><svg width="16" height="16"><use href="#i-users"/></svg></div><div class="ft">Recepcionista recebe mensagem →</div></div>
+          <div class="fstep"><div class="fi"><svg width="16" height="16"><use href="#i-users"/></svg></div><div class="ft">consulta o Klingo →</div></div>
+          <div class="fstep"><div class="fi"><svg width="16" height="16"><use href="#i-users"/></svg></div><div class="ft">responde manualmente →</div></div>
+          <div class="fstep"><div class="fi"><svg width="16" height="16"><use href="#i-users"/></svg></div><div class="ft">confirma →</div></div>
+          <div class="fstep"><div class="fi"><svg width="16" height="16"><use href="#i-users"/></svg></div><div class="ft">atualiza agenda.</div></div>
+        </div>
+        <p class="caption">Cada etapa é humana.</p>
+      </div>
+      <div class="card beam blue-beam bf auto">
+        <h3><span class="badge" style="background:var(--blue-soft);color:var(--blue)">Com integração Klingo</span></h3>
+        <div class="flow">
+          <div class="fstep"><div class="fi"><svg width="18" height="18"><use href="#i-msg"/></svg></div><div class="ft">O paciente interage com o bot →</div></div>
+          <div class="fstep"><div class="fi"><svg width="18" height="18"><use href="#i-http"/></svg></div><div class="ft">o sistema consulta e atualiza o Klingo automaticamente →</div></div>
+          <div class="fstep hi"><div class="fi"><svg width="18" height="18"><use href="#i-users"/></svg></div><div class="ft">recepcionista só vê exceções.</div></div>
+        </div>
+        <p class="caption"><b>Trabalho manual cai drasticamente.</b></p>
+      </div>
+    </div>
+    <div class="note blue bf"><svg><use href="#i-alert"/></svg><p>A integração exige acesso técnico ao Klingo e uma janela de homologação. Os pré-requisitos estão detalhados no <a href="#s12" style="color:inherit;font-weight:700">slide 12</a>.</p></div>
+  </div>
+</section>
+
+<!-- 07 · ROTINAS -->
+<section id="s7">
+  <span class="slide-no">07</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">Cada Rotina Integrada ao Klingo Gera um <span class="hl">Ganho Mensurável</span></h2>
+      <p class="lead bf">A tabela abaixo mostra o que será automatizado e o benefício direto para a operação de <span data-f="cliente">Nome do Cliente</span>.</p>
+    </div>
+    <div class="split">
+      <div class="table-wrap bf">
+        <div class="table">
+          <div class="trow th"><div>Rotina</div><div>Ganho Operacional</div><div>Status</div></div>
+          <div class="trow"><div class="r">Confirmação de agenda</div><div class="g">Reduz faltas e libera o telefone da recepção</div><div><span class="status ok"><svg class="ico"><use href="#i-checkc"/></svg>Fase 2</span></div></div>
+          <div class="trow"><div class="r">Marcação de consulta via WhatsApp</div><div class="g">Paciente agenda sem ligar; recepção valida exceções</div><div><span class="status ok"><svg class="ico"><use href="#i-checkc"/></svg>Fase 2</span></div></div>
+          <div class="trow"><div class="r">Pesquisa de satisfação (NPS)</div><div class="g">Disparo automático pós-atendimento; sem ligação manual</div><div><span class="status ok"><svg class="ico"><use href="#i-checkc"/></svg>Fase 2</span></div></div>
+          <div class="trow"><div class="r">Entrega de resultado de exames</div><div class="g">Paciente recebe sem precisar ligar ou ir à clínica</div><div><span class="status ok"><svg class="ico"><use href="#i-checkc"/></svg>Fase 2</span></div></div>
+          <div class="trow"><div class="r">PEP com assinatura digital</div><div class="g">Documento enviado e assinado pelo WhatsApp</div><div><span class="status wait">[Quando houver]</span></div></div>
+        </div>
+      </div>
+      <div class="bf">
+        <div class="phone">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="wa-head"><div class="av" style="background:#fff;border:1px solid #eee"><img src="logo-icon.png" width="22" alt=""></div><div><div class="n"><span data-f="cliente">Nome do Cliente</span></div><div class="s">online</div></div></div>
+            <div class="wa-body alist" id="waList">
+              <span class="daypill">HOJE</span>
+              <div class="wb l">Olá, <b>Maria</b>! Lembrete da sua consulta:<br><svg class="ico" style="color:var(--orange)"><use href="#i-cal"/></svg> <b>Sexta, 19/09 · 14h30</b><br><svg class="ico" style="color:var(--blue)"><use href="#i-stetho"/></svg> Dra. Helena · Cardiologia<br>Podemos confirmar?<div class="btns"><span><svg class="ico"><use href="#i-check"/></svg> Confirmar</span><span><svg class="ico"><use href="#i-repeat"/></svg> Remarcar</span></div><span class="t">09:00</span></div>
+              <div class="wb r">Confirmar<span class="t">09:02 <svg class="ico"><use href="#i-dcheck"/></svg></span></div>
+              <div class="wb l">Perfeito! Consulta confirmada. Te esperamos <svg class="ico" style="color:var(--blue)"><use href="#i-heart"/></svg><span class="t">09:02</span></div>
+              <div class="wb l"><svg class="ico" style="color:var(--blue)"><use href="#i-flask"/></svg> Seu resultado de exame já está disponível.<div class="doc"><svg class="ico"><use href="#i-file"/></svg>resultado.pdf</div><span class="t">11:40</span></div>
+            </div>
+            <div class="wa-foot"><div></div><span><svg width="16" height="16"><use href="#i-send"/></svg></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · INTEGRAÇÃO -->
+<section class="alt" id="s8">
+  <span class="slide-no">08</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">A Integração é Feita <span class="hl">sob Medida</span> — e Por Isso Exige Acesso Técnico do Cliente</h2>
+      <p class="lead bf">Não existe um plugin de prateleira para conectar o Kualiz ao Klingo. A integração é construída especificamente para <span data-f="cliente">Nome do Cliente</span> usando três mecanismos:</p>
+    </div>
+    <div class="mech">
+      <div class="card magic bf"><div class="ic o"><svg><use href="#i-http"/></svg></div><h3>Requisições HTTP</h3><p>A plataforma consulta e atualiza o Klingo em tempo real, buscando dados diretamente pela API do sistema.</p></div>
+      <div class="card magic bf"><div class="ic y"><svg><use href="#i-bolt"/></svg></div><h3>Captura de Webhook</h3><p>O Klingo avisa o Kualiz automaticamente quando algo muda na agenda — sem polling ou atualização manual.</p></div>
+      <div class="card magic bf"><div class="ic b"><svg><use href="#i-db"/></svg></div><h3>Conexão direta ao Klingo</h3><p>Em alguns fluxos, acesso direto à base de dados garante velocidade e precisão nas consultas.</p></div>
+    </div>
+    <div class="terminal bf">
+      <div class="bar"><i style="background:#FF6159"></i><i style="background:#FFBD2E"></i><i style="background:#28C941"></i><b>kualiz <svg class="ico"><use href="#i-http"/></svg> klingo</b></div>
+<pre><span class="c-o">GET</span>  <span class="c-b">/agenda/horarios</span>?data=<span class="c-y">2026-09-19</span>
+<span class="c-g">200</span>  [ <span class="c-y">"09:00"</span>, <span class="c-y">"14:30"</span>, <span class="c-y">"16:00"</span> ]
+
+<span class="c-o">POST</span> <span class="c-b">/webhooks/klingo</span>  { "evento": <span class="c-y">"agendamento.alterado"</span> }
+<span class="c-g">200</span>  <span class="c-g">OK</span></pre>
+    </div>
+    <div class="note orange bf"><svg><use href="#i-alert"/></svg><p>É necessário: credenciais de acesso ao Klingo, documentação da API e uma janela técnica com o time de TI do Klingo. Sem isso, a integração não avança.</p></div>
+  </div>
+</section>
+
+<!-- 09 · CRM -->
+<section id="s9">
+  <span class="slide-no">09</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">O CRM Organiza os Leads e <span class="hl">Cobra os que Pararam</span> Sozinhos</h2>
+      <p class="lead bf">Na Fase 3, ativamos os funis de venda e recuperação do CRM. Cada lead percorre etapas definidas — e quando para, o sistema age antes que o gestor precise lembrar.</p>
+    </div>
+
+    <h3 class="subh bf">Funil de Venda</h3>
+    <div class="funnel bf">
+      <div class="fn"><small>1</small>Primeiro contato</div>
+      <div class="fn" style="background:var(--orange-soft)"><small>2</small>Consulta agendada</div>
+      <div class="fn" style="background:var(--yellow-soft)"><small>3</small>Atendido</div>
+      <div class="fn" style="background:var(--blue-soft)"><small>4</small>Convertido</div>
+    </div>
+
+    <div class="browser bf" style="margin-bottom:56px">
+      <div class="bar"><i></i><i></i><i></i><div class="url">app.kualiz.com.br/crm</div></div>
+      <div class="table-wrap">
+        <div class="kanban">
+          <div class="col"><div class="ct">Primeiro contato <span>18</span></div>
+            <div class="lead-c"><div class="ln">Carla Mendes</div><div class="lm">Instagram <b>hoje</b></div></div>
+            <div class="lead-c stale"><div class="ln">Paulo Henrique</div><div class="lm">WhatsApp <b><svg class="ico"><use href="#i-clock"/></svg> 3d</b></div></div>
+            <div class="lead-c"><div class="ln">Luiza Rocha</div><div class="lm">Site <b>hoje</b></div></div>
+          </div>
+          <div class="col"><div class="ct">Consulta agendada <span>9</span></div>
+            <div class="lead-c"><div class="ln">Marcos Vieira</div><div class="lm">Sex 14h30 <b style="color:#1F8A4C"><svg class="ico"><use href="#i-checkc"/></svg></b></div></div>
+            <div class="lead-c stale"><div class="ln">Beatriz Lima</div><div class="lm">WhatsApp <b><svg class="ico"><use href="#i-clock"/></svg> 1d</b></div></div>
+          </div>
+          <div class="col"><div class="ct">Atendido <span>6</span></div>
+            <div class="lead-c"><div class="ln">Sônia Ramos</div><div class="lm">Cardiologia <b>ontem</b></div></div>
+            <div class="lead-c"><div class="ln">Diego Alves</div><div class="lm">Exames <b>2d</b></div></div>
+          </div>
+          <div class="col" style="background:#E8F1EA"><div class="ct">Convertido <span>4</span></div>
+            <div class="lead-c"><div class="ln">Helena Duarte</div><div class="lm">WhatsApp <b style="color:#C48A0F"><svg class="ico"><use href="#i-star"/></svg></b></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="crm-grid">
+      <div class="bf">
+        <h3 style="font-size:28px;font-weight:900;margin-bottom:12px">Estagnação? <span class="hl">O Sistema Reage</span></h3>
+        <p class="lead" style="margin-top:0">Um lead parado por mais de 1 dias em qualquer etapa dispara uma escada de contatos automáticos:</p>
+      </div>
+      <div class="stairs">
+        <div class="stair bf"><div class="sn">01</div><div class="sd" style="color:var(--orange)">Dia 1</div><p>Mensagem amigável de retomada via WhatsApp</p></div>
+        <div class="stair bf"><div class="sn">02</div><div class="sd" style="color:#C48A0F">Dia 3</div><p>Segunda mensagem com oferta ou informação de valor</p></div>
+        <div class="stair beam blue-beam bf"><div class="sn">03</div><div class="sd" style="color:var(--blue)">Dia 7</div><p>Alerta interno para o gestor revisar manualmente</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · IA (simulador interativo) -->
+<section class="alt" id="s10">
+  <span class="slide-no">10</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">A IA Agenda Consultas <span class="grad">Sozinha</span> e Escala para Humano Quando Necessário</h2>
+      <p class="lead bf">O assistente de IA conversa em linguagem natural com o paciente, consulta a disponibilidade em tempo real no Klingo e confirma o agendamento — sem intervenção da recepção.</p>
+    </div>
+    <div class="ia-grid">
+      <div class="bf sim-wrap">
+        <div class="phone phone-lg">
+          <div class="screen">
+            <div class="notch"></div>
+            <div class="wa-head"><div class="av" style="background:#fff;border:1px solid #eee"><img src="logo-icon.png" width="22" alt=""></div><div><div class="n"><span data-f="cliente">Nome do Cliente</span></div><div class="s" id="simStatus">online</div></div><button class="sim-reset" id="simReset" title="Reiniciar simulação" aria-label="Reiniciar simulação"><svg class=""><use href="#i-reset"/></svg></button></div>
+            <div class="wa-body sim-body" id="simBody"></div>
+            <div class="sim-quick" id="simQuick"></div>
+            <form class="wa-foot sim-foot" id="simForm" autocomplete="off">
+              <input id="simInput" type="text" placeholder="Mensagem" aria-label="Digite uma mensagem">
+              <button type="submit" aria-label="Enviar"><svg width="16" height="16"><use href="#i-send"/></svg></button>
+            </form>
+          </div>
+        </div>
+        <div class="sim-hint">Simulação · digite ou toque numa sugestão</div>
+      </div>
+      <div class="ia-steps" id="iaStepsA">
+        <div class="ia-step bf"><div class="si"><svg><use href="#i-msg"/></svg></div><div><h4>Paciente envia mensagem</h4><div class="quote">"Quero marcar uma consulta para sexta-feira"</div></div></div>
+        <div class="ia-step bf"><div class="si"><svg><use href="#i-cal"/></svg></div><div><h4>IA interpreta e consulta</h4><p>Verifica agenda no Klingo, oferece horários disponíveis e coleta confirmação</p></div></div>
+        <div class="ia-step bf"><div class="si"><svg><use href="#i-check"/></svg></div><div><h4>Agendamento confirmado</h4><p>Registro no Klingo, confirmação ao paciente e notificação à equipe</p></div></div>
+        <div class="ia-step human bf"><div class="si"><svg><use href="#i-headset"/></svg></div><div><h4>Fora do script → Humano</h4><p>Situações especiais são transferidas para agente com todo o histórico visível</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · FASE 4 -->
+<section id="s11">
+  <span class="slide-no">11</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">Fase 4 · A IA Agenda Consultas Sozinha e Escala para Humano Quando Necessário</h2>
+      <p class="lead bf">Após a Fase 3 (CRM) estar ativa e consolidada, o assistente de IA é ativado para assumir o agendamento de consultas de forma autônoma. Ele se integra ao Klingo para gerenciar a agenda sem intervenção humana, liberando ainda mais a equipe de recepção.</p>
+      <p class="lead bf" style="font-weight:700;color:var(--ink)">Veja como a inteligência artificial otimiza o fluxo:</p>
+    </div>
+    <div class="hflow">
+      <div class="hstep bf"><div class="hn" style="background:var(--orange)"><svg><use href="#i-msg"/></svg></div><h4>Paciente envia mensagem</h4><p>Inicia o contato solicitando um agendamento via WhatsApp.</p></div>
+      <div class="hstep bf"><div class="hn" style="background:var(--yellow)"><svg><use href="#i-brain"/></svg></div><h4>IA interpreta intenção</h4><p>Compreende o pedido do paciente e verifica as possibilidades.</p></div>
+      <div class="hstep bf"><div class="hn" style="background:var(--blue)"><svg><use href="#i-cal"/></svg></div><h4>IA consulta agenda no Klingo</h4><p>Verifica a disponibilidade em tempo real e oferece opções.</p></div>
+      <div class="hstep bf"><div class="hn" style="background:#1F8A4C"><svg><use href="#i-check"/></svg></div><h4>IA confirma o agendamento</h4><p>Registra a consulta no Klingo e envia confirmação ao paciente.</p></div>
+      <div class="hstep bf"><div class="hn" style="background:var(--ink)"><svg><use href="#i-headset"/></svg></div><h4>Escala para humano se necessário</h4><p>Em situações complexas, transfere para um agente com histórico completo.</p></div>
+    </div>
+
+    <div class="browser bf" style="margin-top:48px">
+      <div class="bar"><i></i><i></i><i></i><div class="url">app.kualiz.com.br</div></div>
+      <div class="inbox inbox-ai">
+        <div class="rail"><span></span><span class="on"></span><span></span><span></span></div>
+        <div class="chatpane">
+          <div class="ch"><div style="display:flex;gap:8px;align-items:center"><div class="av" style="background:#4472A3;width:26px;height:26px;font-size:10px">LC</div><b style="font-size:12px">Lucas Carvalho</b></div><span class="tagx" style="background:var(--blue-soft);color:var(--blue)"><svg class="ico"><use href="#i-bot"/></svg> IA</span></div>
+          <div class="msgs">
+            <div class="b in">Quero marcar uma consulta para sexta-feira</div>
+            <div class="b bot">Claro! Na sexta tenho 9h, 11h30 ou 15h. Qual prefere?</div>
+            <div class="sys"><svg class="ico"><use href="#i-bolt"/></svg>Klingo · agenda consultada</div>
+            <div class="b in">11h30</div>
+            <div class="b bot"><svg class="ico"><use href="#i-checkc"/></svg> Agendado para sexta às 11h30!</div>
+            <div class="sys ok"><svg class="ico"><use href="#i-check"/></svg>Registrado no Klingo · equipe notificada</div>
+          </div>
+        </div>
+        <div class="aside">
+          <div class="as-t">Klingo</div>
+          <div class="slot">09:00</div><div class="slot on">11:30 · Lucas C.</div><div class="slot">15:00</div>
+          <div class="as-t" style="margin-top:14px">CRM</div>
+          <div class="lead-c"><div class="ln">Lucas Carvalho</div><div class="lm">Consulta agendada <b style="color:#1F8A4C"><svg class="ico"><use href="#i-checkc"/></svg></b></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="note blue bf"><svg><use href="#i-alert"/></svg><p>A IA só é ativada após a Fase 3 estar estável — garantindo que o contexto do paciente já esteja no CRM antes do primeiro agendamento autônomo.</p></div>
+  </div>
+</section>
+
+<!-- 12 · PRÉ-REQUISITOS -->
+<section class="alt" id="s12">
+  <span class="slide-no">12</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">O Cronograma <span class="hl">Depende de Vocês</span>: Estes São os Pré-requisitos Críticos</h2>
+      <p class="lead bf">Cada item abaixo tem um dono e um prazo. Atraso em qualquer um empurra as fases seguintes. Por favor, tratemos isso como prioridade imediata.</p>
+    </div>
+    <div class="table-wrap bf">
+      <div class="table req">
+        <div class="trow th"><div></div><div>Pré-requisito</div><div>Por quê é crítico</div></div>
+        <div class="trow"><div class="idx">1</div><div class="r">Conta Meta Business verificada</div><div class="g">Sem ela, o número não pode ser ativado na API</div></div>
+        <div class="trow warn"><div class="idx">2</div><div class="r"><span class="hic y" style="width:28px;height:28px;border-radius:8px;margin-right:8px"><svg class=""><use href="#i-alert"/></svg></span>Cartão de crédito cadastrado na Meta com limite folgado</div><div class="g">A Meta cobra por conversa. Cartão vencido ou sem limite derruba todos os envios sem aviso prévio — meses após a implantação.</div></div>
+        <div class="trow"><div class="idx">3</div><div class="r">Número de telefone liberado para a API</div><div class="g">Número já em uso no WhatsApp pessoal precisa ser migrado primeiro</div></div>
+        <div class="trow"><div class="idx">4</div><div class="r">Templates de mensagem redigidos e enviados à Meta</div><div class="g">Aprovação leva dias; sem templates, os disparos não saem</div></div>
+        <div class="trow"><div class="idx">5</div><div class="r">Lista de usuários (nome, perfil, e-mail)</div><div class="g">Necessária para criar os acessos antes do treinamento</div></div>
+        <div class="trow"><div class="idx">6</div><div class="r">Acesso ao Klingo + contato técnico deles</div><div class="g">Sem acesso, a integração da Fase 2 não pode começar</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · RISCOS -->
+<section id="s13">
+  <span class="slide-no">13</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">Ser Honesto Sobre os Riscos é <span class="hl">Parte do Nosso Método</span> de Trabalho</h2>
+      <p class="lead bf">Preferimos nomear os riscos aqui do que explicar uma falha no futuro. Para cada risco, temos um protocolo de mitigação.</p>
+    </div>
+    <div class="risks">
+      <div class="card magic risk bf"><div class="rh"><div class="re" style="background:var(--orange-soft);color:var(--orange)"><svg class=""><use href="#i-alert"/></svg></div><h3>Falha silenciosa de pagamento Meta</h3></div><p>A API confirma o envio, mas nada é entregue. <span class="mit-i"><b>Mitigação:</b> segundo cartão cadastrado, alerta de cobrança no financeiro e monitoramento de taxa de entrega desde o dia 1.</span></p></div>
+      <div class="card magic risk bf"><div class="rh"><div class="re" style="background:var(--yellow-soft);color:#C48A0F"><svg class=""><use href="#i-hourglass"/></svg></div><h3>Aprovação de templates pode demorar ou ser recusada</h3></div><p>A Meta avalia cada template — processo leva de 1 a 7 dias e pode reprovar sem aviso claro. <span class="mit-i"><b>Mitigação:</b> submetemos os templates como Utilidade (não Marketing) sempre que possível e preparamos alternativas.</span></p></div>
+      <div class="card magic risk bf"><div class="rh"><div class="re" style="background:var(--blue-soft);color:var(--blue)"><svg class=""><use href="#i-chart"/></svg></div><h3>"Aceito pela API" não significa "entregue ao paciente"</h3></div><p>Monitoramos entrega e leitura desde o primeiro disparo — não apenas o status de envio. <span class="mit-i">Alertas automáticos quando a taxa cai.</span></p></div>
+      <div class="card magic risk bf"><div class="rh"><div class="re" style="background:#FDEDEA;color:#C2412D"><svg class=""><use href="#i-thermo"/></svg></div><h3>Número novo precisa de aquecimento</h3></div><p>Números novos na API têm limite diário baixo no início. <span class="mit-i">Aumentamos gradualmente ao longo das primeiras semanas para não acionar filtros antispam da Meta.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · FORMA DE TRABALHAR -->
+<section class="alt" id="s14">
+  <span class="slide-no">14</span>
+  <div class="wrap">
+    <div class="head">
+      <h2 class="bf">Nossa Forma de Trabalhar Juntos Garante <span class="hl">Previsibilidade</span> e Agilidade</h2>
+    </div>
+    <div class="ways">
+      <div class="card magic bf"><h3><span class="hic o"><svg class=""><use href="#i-cal"/></svg></span>Reuniões de Acompanhamento</h3><p>As reuniões são agendadas de acordo com a solicitação e disponibilidade do cliente — sem frequência fixa imposta. Sempre que necessário, a Kualiz está disponível para alinhar status, tirar dúvidas e avançar juntos.</p></div>
+      <div class="card beam magic bf"><h3><span class="hic g"><svg class=""><use href="#i-msg"/></svg></span>Atendimento e Suporte</h3><p>O atendimento é realizado diretamente pelo WhatsApp: <a class="wa-inline" href="https://wa.me/5531994860390" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#i-wa"/></svg>(31) 99486-0390</a>. O suporte não funciona por grupos — todas as solicitações devem ser enviadas diretamente para esse número para garantir agilidade e rastreabilidade.</p></div>
+      <div class="card magic bf"><h3><span class="hic b"><svg class=""><use href="#i-repeat"/></svg></span>Mudança de Escopo</h3><p>Os prazos de atendimento são definidos de acordo com a solicitação e a complexidade de cada caso. O sistema possui diversas funcionalidades — cada demanda é avaliada individualmente antes de qualquer execução. Nada entra sem aprovação prévia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · PRÓXIMOS PASSOS -->
+<section class="next" id="s15">
+  <span class="slide-no">15</span>
+  <div class="dots"></div>
+  <div class="wrap" style="position:relative">
+    <div class="head">
+      <h2 class="bf">Os Próximos Passos Estão Definidos — <span class="grad">Vamos Começar</span></h2>
+      <p class="lead bf">Saímos desta reunião com três ações claras, donos definidos e datas acordadas. A próxima reunião já está na agenda.</p>
+    </div>
+    <div class="actions">
+      <div class="action card beam bf"><div class="an" style="background:var(--orange)">1</div><h3> envia lista de usuários e acesso à Meta Business</h3><div class="row">Responsável: <b><span data-f="responsaveis">Responsáveis do cliente</span></b></div><div class="row">Prazo: <b><span data-f="prazo">dd/mm/aaaa às 00:00</span></b></div></div>
+      <div class="action card beam blue-beam bf"><div class="an" style="background:var(--blue)">2</div><h3>Kualiz inicia configuração dos canais e criação de usuários</h3><div class="row">Responsável: <b><span data-f="apresentador">Nome do apresentador</span></b></div></div>
+    </div>
+    <div class="meeting bf">
+      <div class="mt"><svg class="ico"><use href="#i-cal"/></svg>Próxima reunião: <span data-f="proxima">dd/mm/aaaa às 00:00</span> — <span>Revisão do andamento da Fase 1 e validação das automações configuradas.</span></div>
+    </div>
+    <div class="thanks bf">
+      <h3>Obrigado pela confiança. <span class="grad">Estamos prontos para construir isso juntos.</span></h3>
+      <img src="logo-kualiz.png" alt="Kualiz">
+    </div>
+  </div>
+</section>
+
+
+<div class="ed-overlay" id="edOverlay" hidden></div>
+<aside class="ed-panel" id="edPanel" hidden aria-label="Editar informações">
+  <div class="ed-head">
+    <div><div class="ed-title">Editar informações</div><div class="ed-sub">As mudanças aparecem na hora e ficam salvas no link.</div></div>
+    <button class="ed-x" id="edClose" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <form class="ed-form" id="edForm" autocomplete="off">
+    <div class="ed-group">Cliente</div>
+    <label>Nome do cliente<input name="cliente"></label>
+    <label>Contato do cliente<input name="contato"></label>
+    <label>Responsáveis do cliente (ação 1)<input name="responsaveis"></label>
+    <div class="ed-group">Kualiz</div>
+    <label>Quem está apresentando<input name="apresentador"></label>
+    <div class="ed-group">Datas</div>
+    <label>Data do kick-off<input name="data"></label>
+    <label>Prazo da ação 1<input name="prazo"></label>
+    <label>Próxima reunião<input name="proxima"></label>
+  </form>
+  <div class="ed-foot">
+    <button type="button" class="ed-secondary" id="edReset">Limpar</button>
+    <button type="button" class="ed-secondary" id="edPdf" title="Baixar PDF com os dados preenchidos"><svg viewBox="0 0 24 24" width="16" height="16"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>PDF</button>
+    <button type="button" class="ed-primary" id="edCopy"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>Copiar link</span></button>
+  </div>
+</aside>
+<div class="p-bar" id="pBar"></div>
+<div class="p-controls" id="pControls">
+  <button id="pPrev" aria-label="Slide anterior"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg></button>
+  <span class="cnt" id="pCount">1 / 15</span>
+  <button id="pNext" aria-label="Próximo slide"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg></button>
+  <button id="pFull" aria-label="Tela cheia"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg></button>
+  <button id="pExit" aria-label="Sair da apresentação"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" d="M18 6 6 18M6 6l12 12"/></svg></button>
+</div>
+<script>
+(() => {
+  const DEFAULTS = { cliente: 'Nome do Cliente', contato: 'Nome do contato', responsaveis: 'Responsáveis do cliente',
+    apresentador: 'Nome do apresentador', data: 'dd/mm/aaaa', prazo: 'dd/mm/aaaa às 00:00', proxima: 'dd/mm/aaaa às 00:00' };
+  const KEYS = Object.keys(DEFAULTS);
+  const FIELDS = { ...DEFAULTS };
+  (() => {
+    const q = new URLSearchParams(location.search);
+    let stored = {};
+    try { stored = JSON.parse(localStorage.getItem('kickoff-fields') || '{}'); } catch (e) {}
+    const fromUrl = KEYS.some(k => q.has(k));
+    KEYS.forEach(k => { const v = fromUrl ? q.get(k) : stored[k]; if (v) FIELDS[k] = v; });
+  })();
+  const applyFields = () => {
+    document.querySelectorAll('[data-f]').forEach(el => { el.textContent = FIELDS[el.dataset.f] || DEFAULTS[el.dataset.f]; });
+    document.title = `Kick-off de Implantação Kualiz · ${FIELDS.cliente}`;
+  };
+  const fieldsUrl = () => {
+    const q = new URLSearchParams();
+    KEYS.forEach(k => { if (FIELDS[k] && FIELDS[k] !== DEFAULTS[k]) q.set(k, FIELDS[k]); });
+    const qs = q.toString();
+    return location.origin + location.pathname + (qs ? `?${qs}` : '');
+  };
+  applyFields();
+
+  // Scroll progress
+  const bar = document.getElementById('progress');
+  const onScroll = () => {
+    const h = document.documentElement;
+    bar.style.transform = `scaleX(${h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)})`;
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Blur fade in
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const sibs = [...el.parentElement.children].filter(c => c.classList.contains('bf'));
+      el.style.transitionDelay = `${Math.min(sibs.indexOf(el), 6) * 90}ms`;
+      el.classList.add('in');
+      io.unobserve(el);
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.bf').forEach(el => io.observe(el));
+
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { e.target.classList.add('in'); o.disconnect(); } }, { threshold: .3 })
+    .observe(document.getElementById('phases'));
+
+  // Magic card spotlight
+  document.querySelectorAll('.magic').forEach(c => c.addEventListener('pointermove', ev => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', `${ev.clientX - r.left}px`);
+    c.style.setProperty('--my', `${ev.clientY - r.top}px`);
+  }));
+
+  // Animated beams
+  const hub = document.getElementById('hub'), svg = document.getElementById('beams');
+  const drawBeams = () => {
+    if (getComputedStyle(svg).display === 'none') return;
+    const hr = hub.getBoundingClientRect();
+    const k = hr.width / hub.offsetWidth || 1;
+    const core = document.getElementById('hubcore').getBoundingClientRect();
+    const tgt = document.getElementById('hubtarget').getBoundingClientRect();
+    const cx = (core.left - hr.left + core.width / 2) / k, cy = (core.top - hr.top + core.height / 2) / k, cw = core.width / k;
+    let paths = '';
+    const mk = (x1, y1, x2, y2, i, colors) => {
+      const mx = (x1 + x2) / 2;
+      const d = `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
+      paths += `<defs><linearGradient id="bg${i}" gradientUnits="userSpaceOnUse" x1="${x1}" y1="0" x2="${x2}" y2="0">
+        <stop offset="0" stop-color="${colors[0]}" stop-opacity="0"/><stop offset=".5" stop-color="${colors[0]}"/><stop offset="1" stop-color="${colors[1]}" stop-opacity="0"/>
+        <animate attributeName="x1" values="${x1 - (x2 - x1)};${x2}" dur="${2.6 + i * .35}s" repeatCount="indefinite"/>
+        <animate attributeName="x2" values="${x1};${x2 + (x2 - x1)}" dur="${2.6 + i * .35}s" repeatCount="indefinite"/>
+      </linearGradient></defs>
+      <path d="${d}" stroke="#E6E0DA" stroke-width="2" fill="none"/>
+      <path d="${d}" stroke="url(#bg${i})" stroke-width="3" stroke-linecap="round" fill="none"/>`;
+    };
+    document.querySelectorAll('[data-beam]').forEach((ch, i) => {
+      const r = ch.getBoundingClientRect();
+      mk((r.right - hr.left) / k, (r.top - hr.top + r.height / 2) / k, cx - cw / 2, cy, i, ['#D65F3B', '#F5B93B']);
+    });
+    mk(cx + cw / 2, cy, (tgt.left - hr.left) / k, cy, 9, ['#4472A3', '#D65F3B']);
+    svg.innerHTML = paths;
+  };
+  addEventListener('resize', drawBeams);
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { setTimeout(drawBeams, 900); o.disconnect(); } }).observe(hub);
+  setTimeout(drawBeams, 400);
+
+  // Animated list (slide 07 phone)
+  const list = document.getElementById('waList');
+  const items = [...list.children];
+  let li = 0, running = false;
+  const tick = () => {
+    if (li >= items.length) {
+      setTimeout(() => { items.forEach(x => x.classList.remove('show')); li = 0; setTimeout(tick, 700); }, 3200);
+      return;
+    }
+    items[li++].classList.add('show');
+    setTimeout(tick, li === 1 ? 300 : 1300);
+  };
+  new IntersectionObserver(([e]) => { if (e.isIntersecting && !running) { running = true; tick(); } }, { threshold: .3 }).observe(list);
+
+  /* ================= Simulador WhatsApp + IA (100% local, roteirizado) ================= */
+  const body = document.getElementById('simBody');
+  const quick = document.getElementById('simQuick');
+  const form = document.getElementById('simForm');
+  const input = document.getElementById('simInput');
+  const status = document.getElementById('simStatus');
+  const steps = [...document.getElementById('iaStepsA').children];
+
+  const SPECS = [
+    [/cardio/, 'Cardiologia', 'Dra. Helena'],
+    [/derma/, 'Dermatologia', 'Dra. Luana'],
+    [/pediatr/, 'Pediatria', 'Dr. Marcelo'],
+    [/ortop/, 'Ortopedia', 'Dr. Ricardo'],
+    [/gineco/, 'Ginecologia', 'Dra. Camila'],
+    [/oftalm|olho/, 'Oftalmologia', 'Dr. André'],
+    [/clinic|geral/, 'Clínica Geral', 'Dr. Fábio'],
+  ];
+  const DAYS = [
+    [/segunda/, 'segunda-feira'], [/terca/, 'terça-feira'], [/quarta/, 'quarta-feira'],
+    [/quinta/, 'quinta-feira'], [/sexta/, 'sexta-feira'], [/sabado/, 'sábado'], [/amanha/, 'amanhã'], [/\bhoje\b/, 'hoje'],
+  ];
+  const SLOTS = { 'segunda-feira': ['08h00', '10h30', '16h00'], 'terça-feira': ['09h00', '13h30', '17h00'], 'quarta-feira': ['08h30', '11h00', '15h30'],
+    'quinta-feira': ['10h00', '14h00', '16h30'], 'sexta-feira': ['09h00', '11h30', '15h00'], 'sábado': ['08h00', '09h30', '11h00'],
+    'amanhã': ['10h00', '14h30', '16h00'], 'hoje': ['16h30', '17h30'] };
+
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const now = () => new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+  let S, queue = Promise.resolve(), session = 0;
+
+  const setStep = i => steps.forEach((s, k) => s.classList.toggle('act', k === i));
+  const scroll = () => { body.scrollTop = body.scrollHeight; };
+  const setQuick = opts => {
+    quick.innerHTML = '';
+    (opts || []).forEach(t => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = t;
+      b.onclick = () => send(t);
+      quick.appendChild(b);
+    });
+  };
+  const add = (html, cls) => {
+    const d = document.createElement('div'); d.className = cls; d.innerHTML = html;
+    d.querySelectorAll('[data-f]').forEach(el => { el.textContent = FIELDS[el.dataset.f]; });
+    body.appendChild(d); scroll(); return d;
+  };
+  const userMsg = t => add(`${esc(t)}<span class="t">${now()} <svg class="ico"><use href="#i-dcheck"/></svg></span>`, 'wb r');
+  const sys = (t, tone = '') => add(t, `sim-sys ${tone}`);
+
+  // Bot fala com "digitando…"
+  const say = (html, { who = 'ia', delay = 900 } = {}) => {
+    const my = session;
+    queue = queue.then(async () => {
+      if (my !== session) return;
+      status.textContent = 'digitando…';
+      const typing = add('<i></i><i></i><i></i>', 'wb l typing');
+      await wait(delay + Math.min(html.length * 8, 900));
+      typing.remove();
+      if (my !== session) return;
+      status.textContent = 'online';
+      const tag = who === 'ia' ? '<div class="ai-tag"><svg class="ico"><use href="#i-sparkle"/></svg> ASSISTENTE IA</div>'
+        : `<div class="ai-tag human">● RECEPÇÃO · ${who}</div>`;
+      add(`${tag}${html}<span class="t">${now()}</span>`, who === 'ia' ? 'wb l' : 'wb l agent');
+    });
+    return queue;
+  };
+  const later = fn => { const my = session; queue = queue.then(() => my === session && fn()); return queue; };
+
+  const findSpec = n => SPECS.find(([re]) => re.test(n));
+  const findDay = n => (DAYS.find(([re]) => re.test(n)) || [])[1];
+
+  function reset() {
+    session++; queue = Promise.resolve();
+    S = { mode: 'ia', spec: null, day: null, awaiting: null, slots: [] };
+    body.innerHTML = ''; setStep(-1); status.textContent = 'online';
+    add('HOJE', 'daypill');
+    say(`Olá! Sou a assistente virtual da <b data-f="cliente">${esc(FIELDS.cliente)}</b>. Posso agendar sua consulta, enviar resultado de exames ou te passar para a recepção. Como posso ajudar?`, { delay: 400 });
+    later(() => setQuick(['Quero marcar uma consulta para sexta-feira', 'Ver resultado de exame', 'Falar com atendente']));
+  }
+
+  function handoff(reason) {
+    S.mode = 'human'; S.awaiting = null;
+    setStep(3);
+    if (reason !== '') say(reason || 'Entendi! Vou te transferir para a recepção. Ela vai ver todo o nosso histórico, você não precisa repetir nada.');
+    later(() => sys('<svg class=\"ico\"><use href=\"#i-forward\"/></svg>Transferido para a fila Recepção · histórico completo visível', 'blue'));
+    say('Oi! Aqui é a Juliana, da recepção! Já li a sua conversa. Como posso te ajudar?', { who: 'Juliana', delay: 1600 });
+    later(() => setQuick(['Voltar para a assistente']));
+  }
+
+  function offerSlots() {
+    setStep(1);
+    later(() => sys('<svg class="ico"><use href="#i-bolt"/></svg>Consultando agenda no Klingo…'));
+    later(() => wait(900));
+    S.slots = SLOTS[S.day] || SLOTS['sexta-feira'];
+    const doc = S.spec[2];
+    say(`Encontrei estes horários de <b>${S.spec[1]}</b> com ${doc} na <b>${S.day}</b>:<br><svg class="ico" style="color:var(--orange)"><use href="#i-clock"/></svg> ${S.slots.join(' · ')}<br>Qual prefere?`);
+    S.awaiting = 'slot';
+    later(() => setQuick([...S.slots, 'Outro dia']));
+  }
+
+  function schedule() {
+    if (!S.spec) {
+      S.awaiting = 'spec';
+      say('Claro! Para qual especialidade seria a consulta?');
+      later(() => setQuick(['Cardiologia', 'Dermatologia', 'Pediatria', 'Ortopedia', 'Clínica Geral']));
+      return;
+    }
+    if (!S.day) {
+      S.awaiting = 'day';
+      say(`Perfeito, <b>${S.spec[1]}</b>. Para qual dia você prefere?`);
+      later(() => setQuick(['Amanhã', 'Segunda-feira', 'Quarta-feira', 'Sexta-feira']));
+      return;
+    }
+    offerSlots();
+  }
+
+  function confirm(slot) {
+    S.awaiting = 'after';
+    later(() => sys('<svg class="ico"><use href="#i-bolt"/></svg>Registrando no Klingo…'));
+    later(() => wait(700));
+    say(`<svg class="ico" style="color:#1F8A4C"><use href="#i-checkc"/></svg> <b>Consulta agendada!</b><br><svg class="ico" style="color:var(--orange)"><use href="#i-cal"/></svg> ${S.day[0].toUpperCase() + S.day.slice(1)} · ${slot}<br><svg class="ico" style="color:var(--blue)"><use href="#i-stetho"/></svg> ${S.spec[2]} · ${S.spec[1]}<br>Vou te mandar um lembrete na véspera <svg class="ico" style="color:var(--blue)"><use href="#i-heart"/></svg>`);
+    later(() => { sys('<svg class="ico"><use href="#i-check"/></svg>Registrado no Klingo · equipe notificada', 'green'); setStep(2); });
+    later(() => setQuick(['Remarcar', 'Obrigado!', 'Falar com atendente']));
+  }
+
+  function reply(text) {
+    const n = norm(text);
+    setQuick([]);
+
+    if (S.mode === 'human') {
+      if (/voltar|assistente/.test(n)) {
+        S.mode = 'ia';
+        later(() => sys('<svg class="ico"><use href="#i-back"/></svg>Conversa devolvida à assistente IA', 'blue'));
+        say('Voltei! Posso agendar uma consulta ou te enviar resultados de exames.');
+        later(() => setQuick(['Quero marcar uma consulta para sexta-feira', 'Ver resultado de exame']));
+        return;
+      }
+      say(['Anotado! Vou verificar isso agora e já te retorno por aqui.', 'Certo! Já estou vendo no sistema, só um instante.', 'Perfeito, resolvido! Precisa de mais alguma coisa?'][Math.floor(Math.random() * 3)], { who: 'Juliana', delay: 1400 });
+      later(() => setQuick(['Voltar para a assistente']));
+      return;
+    }
+
+    setStep(0);
+
+    if (/atendente|humano|pessoa|recepc|reclama|urgen|emergen|falar com alguem|dor forte|sangr/.test(n)) {
+      return handoff(/urgen|emergen|dor forte|sangr/.test(n)
+        ? 'Isso parece importante. Vou te passar <b>agora</b> para a recepção, com prioridade.' : null);
+    }
+
+    const spec = findSpec(n), day = findDay(n);
+
+    if (S.awaiting === 'slot') {
+      const m = n.match(/(\d{1,2})\s*(?:h|:)?\s*(\d{2})?/);
+      if (/outro dia/.test(n)) { S.day = null; return schedule(); }
+      if (day && !m) { S.day = day; return offerSlots(); }
+      if (m) {
+        const hh = m[1].padStart(2, '0'), mm = m[2] || '00';
+        const pick = S.slots.find(s => s.startsWith(hh) && (!m[2] || s.endsWith(mm))) || S.slots.find(s => s.startsWith(hh));
+        if (pick) return confirm(pick);
+        say(`Esse horário não está livre. Na ${S.day} tenho: ${S.slots.join(' · ')}`);
+        later(() => setQuick([...S.slots, 'Outro dia']));
+        return;
+      }
+    }
+
+    if (S.awaiting === 'after' && /remarc|mudar|trocar/.test(n)) { S.day = null; return schedule(); }
+    if (/cancel/.test(n)) {
+      say('Consigo te ajudar com isso. Cancelamentos passam por um atendente para confirmar os dados.');
+      return handoff('');
+    }
+    if (/obrigad|valeu|brigad/.test(n)) {
+      say('Imagina! Qualquer coisa é só chamar por aqui <svg class="ico" style="color:var(--blue)"><use href="#i-heart"/></svg>');
+      later(() => setQuick(['Quero marcar uma consulta para sexta-feira', 'Ver resultado de exame']));
+      return;
+    }
+    if (/exame|resultado|laudo/.test(n)) {
+      setStep(1);
+      later(() => sys('<svg class="ico"><use href="#i-bolt"/></svg>Buscando resultado no Klingo…'));
+      say('Encontrei! Seu resultado já está disponível.<div class="doc"><svg class="ico"><use href="#i-file"/></svg>resultado-exame.pdf</div>');
+      later(() => setQuick(['Quero marcar uma consulta para sexta-feira', 'Obrigado!']));
+      return;
+    }
+    if (/conveni|plano de saude|particular|valor|preco|quanto custa/.test(n)) {
+      say('Essa informação eu confirmo com a recepção, para te passar certinho.');
+      return handoff('');
+    }
+
+    if (S.awaiting === 'spec' && !spec) {
+      say('Não encontrei essa especialidade. Escolha uma das opções:');
+      later(() => setQuick(['Cardiologia', 'Dermatologia', 'Pediatria', 'Ortopedia', 'Clínica Geral']));
+      return;
+    }
+    if (S.awaiting === 'day' && !day) {
+      say('Me diga o dia da semana que prefere.');
+      later(() => setQuick(['Amanhã', 'Segunda-feira', 'Quarta-feira', 'Sexta-feira']));
+      return;
+    }
+
+    if (spec || day || /marc|agend|consulta|horario|vaga|remarc/.test(n) || S.awaiting === 'spec' || S.awaiting === 'day') {
+      if (spec) S.spec = spec;
+      if (day) S.day = day;
+      return schedule();
+    }
+
+    if (/^(oi|ola|bom dia|boa tarde|boa noite|e ai|opa)\b/.test(n)) {
+      say('Olá! Como posso te ajudar hoje?');
+      later(() => setQuick(['Quero marcar uma consulta para sexta-feira', 'Ver resultado de exame', 'Falar com atendente']));
+      return;
+    }
+
+    // Fora do script → humano
+    say('Hmm, essa eu prefiro não arriscar.');
+    handoff('Vou te passar para a recepção, que resolve isso melhor que eu.');
+  }
+
+  function send(text) {
+    text = text.trim(); if (!text) return;
+    userMsg(text); input.value = '';
+    reply(text);
+  }
+
+  form.addEventListener('submit', e => { e.preventDefault(); send(input.value); });
+  document.getElementById('simReset').onclick = reset;
+  reset();
+
+  /* ================= Modo apresentação ================= */
+  (() => {
+    const slides = [...document.querySelectorAll('body > section')];
+    const bodyEl = document.body;
+    const count = document.getElementById('pCount'), pbar = document.getElementById('pBar');
+    const menu = document.getElementById('presentMenu');
+    let cur = 0, on = false, idleT;
+
+    // agrupa o conteúdo abaixo do título num bloco que escala por inteiro (sem achatar mockups)
+    slides.forEach(sec => {
+      const wrap = sec.querySelector(':scope > .wrap'), head = wrap && wrap.querySelector(':scope > .head');
+      if (!head || wrap.querySelector(':scope > .p-body')) return;
+      const pb = document.createElement('div'); pb.className = 'p-body';
+      [...wrap.children].filter(c => c !== head).forEach(c => pb.appendChild(c));
+      wrap.appendChild(pb);
+    });
+    const fit = () => {
+      if (!on) return;
+      const wrap = slides[cur].querySelector(':scope > .wrap');
+      wrap.dataset.no = `${String(cur + 1).padStart(2, '0')} / ${slides.length}`;
+      wrap.style.transform = `scale(${Math.min(innerWidth / 1600, innerHeight / 900)})`;
+      fitBody(wrap);
+    };
+    function fitBody(wrap) {
+      const pb = wrap.querySelector(':scope > .p-body');
+      if (!pb) return;
+      pb.style.transform = 'none';
+      const avail = 900 - 84 - pb.offsetTop, h = pb.offsetHeight;
+      const z = Math.min(1, avail / h), dy = Math.max(0, (avail - h * z) / 2);
+      pb.style.transform = `translateY(${dy}px) scale(${z})`;
+    }
+
+    // ---- PDF: monta todos os slides no palco 16:9 e abre a impressão (Salvar como PDF) ----
+    let printing = false;
+    const preparePrint = () => {
+      if (printing) return;
+      printing = true;
+      bodyEl.classList.add('presenting', 'printing');
+      document.querySelectorAll('.bf').forEach(el => el.classList.add('in'));
+      document.querySelectorAll('#waList > *').forEach(el => el.classList.add('show'));
+      document.getElementById('phases').classList.add('in');
+      slides.forEach((sec, i) => {
+        sec.classList.add('p-active');
+        const w = sec.querySelector(':scope > .wrap');
+        w.dataset.no = `${String(i + 1).padStart(2, '0')} / ${slides.length}`;
+        w.style.transform = 'none';
+        fitBody(w);
+      });
+      drawBeams();
+    };
+    const restorePrint = () => {
+      if (!printing) return;
+      printing = false;
+      bodyEl.classList.remove('printing');
+      slides.forEach(sec => {
+        sec.classList.remove('p-active');
+        const w = sec.querySelector(':scope > .wrap'), pb = w && w.querySelector(':scope > .p-body');
+        if (w) w.style.transform = '';
+        if (pb) pb.style.transform = '';
+      });
+      if (on) show(cur);
+      else bodyEl.classList.remove('presenting');
+      setTimeout(drawBeams, 60);
+    };
+    const printPdf = () => {
+      menu.classList.remove('open');
+      const prevTitle = document.title;
+      document.title = `Kick-off Kualiz - ${FIELDS.cliente}`;
+      preparePrint();
+      setTimeout(() => {
+        window.print();
+        document.title = prevTitle;
+      }, 350);
+    };
+    window.__printPdf = printPdf;
+    addEventListener('beforeprint', preparePrint);
+    if (location.hash === '#pdf') setTimeout(preparePrint, 50);
+    addEventListener('afterprint', restorePrint);
+    document.fonts && document.fonts.ready.then(() => fit());
+    const show = i => {
+      cur = Math.max(0, Math.min(slides.length - 1, i));
+      slides.forEach((s, k) => s.classList.toggle('p-active', k === cur));
+      const sec = slides[cur];
+      sec.querySelectorAll('.bf').forEach(el => { el.style.transitionDelay = '0ms'; el.classList.add('in'); });
+      document.getElementById('phases').classList.add('in');
+      count.textContent = `${cur + 1} / ${slides.length}`;
+      pbar.style.width = `${((cur + 1) / slides.length) * 100}%`;
+      history.replaceState(null, '', `${location.search}#slide-${cur + 1}`);
+      fit();
+      if (sec.id === 's2') setTimeout(drawBeams, 60);
+    };
+    const currentByScroll = () => {
+      const mid = innerHeight / 3;
+      let idx = 0;
+      slides.forEach((s, k) => { if (s.getBoundingClientRect().top <= mid) idx = k; });
+      return idx;
+    };
+    const start = (from) => {
+      menu.classList.remove('open');
+      const idx = from === 'current' ? currentByScroll() : 0;
+      on = true; bodyEl.classList.add('presenting');
+      document.documentElement.requestFullscreen?.().catch(() => {});
+      show(idx); poke();
+    };
+    const stop = () => {
+      if (!on) return;
+      on = false; bodyEl.classList.remove('presenting', 'idle');
+      slides.forEach(s => { s.classList.remove('p-active'); const w = s.querySelector(':scope > .wrap'); if (w) w.style.transform = ''; const pb = w && w.querySelector(':scope > .p-body'); if (pb) pb.style.transform = ''; });
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      history.replaceState(null, '', location.pathname + location.search);
+      document.documentElement.style.scrollBehavior = 'auto';
+      slides[cur].scrollIntoView();
+      document.documentElement.style.scrollBehavior = '';
+      setTimeout(drawBeams, 60);
+    };
+    const poke = () => {
+      bodyEl.classList.remove('idle'); clearTimeout(idleT);
+      idleT = setTimeout(() => on && bodyEl.classList.add('idle'), 2600);
+    };
+
+    document.getElementById('presentStart').onclick = () => start('start');
+    document.getElementById('presentCaret').onclick = e => { e.stopPropagation(); menu.classList.toggle('open'); };
+    menu.querySelectorAll('button').forEach(b => b.onclick = () => b.hasAttribute('data-pdf') ? printPdf() : start(b.dataset.from));
+    addEventListener('click', () => menu.classList.remove('open'));
+    document.getElementById('pPrev').onclick = () => show(cur - 1);
+    document.getElementById('pNext').onclick = () => show(cur + 1);
+    document.getElementById('pExit').onclick = stop;
+    document.getElementById('pFull').onclick = () => document.fullscreenElement
+      ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+
+    addEventListener('keydown', e => {
+      if (!on) return;
+      const typing = e.target.closest('input, textarea');
+      if (typing && e.key !== 'Escape') return;
+      if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); show(cur + 1); }
+      else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); show(cur - 1); }
+      else if (e.key === 'Home') show(0);
+      else if (e.key === 'End') show(slides.length - 1);
+      else if (e.key === 'Escape') stop();
+      poke();
+    });
+    addEventListener('mousemove', () => on && poke());
+    addEventListener('resize', () => { fit(); if (on && slides[cur].id === 's2') setTimeout(drawBeams, 60); });
+
+    // swipe no celular / tablet
+    let tx = null;
+    addEventListener('touchstart', e => { if (on) tx = e.touches[0].clientX; }, { passive: true });
+    addEventListener('touchend', e => {
+      if (!on || tx === null) return;
+      const dx = e.changedTouches[0].clientX - tx; tx = null;
+      if (Math.abs(dx) > 50 && !e.target.closest('.phone')) show(cur + (dx < 0 ? 1 : -1));
+      poke();
+    });
+
+    // link direto: ...#apresentar abre no modo apresentação (sem tela cheia, que exige clique)
+    const m = location.hash.match(/^#(?:apresentar|slide-(\d+))$/);
+    if (m && location.hash.startsWith('#apresentar')) { on = true; bodyEl.classList.add('presenting'); show(0); poke(); }
+  })();
+
+  /* ================= Painel de edição ================= */
+  (() => {
+    const panel = document.getElementById('edPanel'), overlay = document.getElementById('edOverlay');
+    const form = document.getElementById('edForm'), copyBtn = document.getElementById('edCopy');
+    const open = () => {
+      KEYS.forEach(k => { const i = form.elements[k]; i.value = FIELDS[k] === DEFAULTS[k] ? '' : FIELDS[k]; i.placeholder = DEFAULTS[k]; });
+      panel.hidden = overlay.hidden = false;
+      setTimeout(() => form.elements.cliente.focus(), 60);
+    };
+    const close = () => { panel.hidden = overlay.hidden = true; };
+    const save = () => {
+      KEYS.forEach(k => { FIELDS[k] = form.elements[k].value.trim() || DEFAULTS[k]; });
+      applyFields();
+      try { localStorage.setItem('kickoff-fields', JSON.stringify(FIELDS)); } catch (e) {}
+      history.replaceState(null, '', fieldsUrl().replace(location.origin, '') + location.hash);
+    };
+    document.getElementById('editOpen').onclick = open;
+    document.getElementById('edPdf').onclick = () => { save(); close(); window.__printPdf(); };
+    const optBtn = document.getElementById('optBtn'), optMenu = document.getElementById('optMenu');
+    optBtn.onclick = e => { e.stopPropagation(); optMenu.classList.toggle('open'); };
+    addEventListener('click', () => optMenu.classList.remove('open'));
+    const clearAll = () => {
+      KEYS.forEach(k => FIELDS[k] = DEFAULTS[k]);
+      applyFields();
+      try { localStorage.removeItem('kickoff-fields'); } catch (e) {}
+      history.replaceState(null, '', location.pathname + location.hash);
+    };
+    optMenu.querySelectorAll('button').forEach(b => b.onclick = () => {
+      optMenu.classList.remove('open');
+      const a = b.dataset.act;
+      if (a === 'edit') open();
+      else if (a === 'copy') copyLink();
+      else if (a === 'pdf') window.__printPdf();
+      else if (a === 'clear' && confirm('Limpar todas as informações preenchidas?')) clearAll();
+    });
+    document.getElementById('edClose').onclick = close;
+    overlay.onclick = close;
+    form.addEventListener('input', save);
+    form.addEventListener('submit', e => { e.preventDefault(); close(); });
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !panel.hidden) close(); });
+    document.getElementById('edReset').onclick = () => { KEYS.forEach(k => form.elements[k].value = ''); save(); };
+    const copyLink = async (btn) => {
+      save();
+      const url = fieldsUrl();
+      try { await navigator.clipboard.writeText(url); }
+      catch (e) { const t = document.createElement('textarea'); t.value = url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+      copyBtn.classList.add('ok'); copyBtn.querySelector('span').textContent = 'Link copiado!';
+      setTimeout(() => { copyBtn.classList.remove('ok'); copyBtn.querySelector('span').textContent = 'Copiar link'; }, 2200);
+    };
+    copyBtn.onclick = () => copyLink();
+  })();
+})();
+</script>
+</body>
+</html>
